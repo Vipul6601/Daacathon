@@ -1,5 +1,7 @@
 package com.siemens.decathon.opcUAClient;
 
+import com.siemens.decathon.Constants.OpcUAClientConstants;
+
 public class OpcUAClientComponent {
 
 	private static OpcUAClient opcUAClient;
@@ -9,7 +11,7 @@ public class OpcUAClientComponent {
 		opcUAClient = new OpcUAClient();
 		opcUAClientSubs = new OpcUAClientSubscriber();
 		try {
-			opcUAClient.getApplicationURI("opc.tcp://192.168.19.58:53530/OPCUA/SimulationServer");
+			opcUAClient.getApplicationURI(OpcUAClientConstants.APPLICATION_URI);
 			opcUAClient.getEndPoints(0);
 			opcUAClient.getNodes(0, 0);
 		} catch (Exception e) {

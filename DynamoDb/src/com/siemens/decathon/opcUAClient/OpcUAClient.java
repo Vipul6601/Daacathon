@@ -293,13 +293,6 @@ public class OpcUAClient
         }
     };
     
-    /*
-     * public void setNodesSubscriptionBox(NodesSubscriptionBox nodesSubscriptionBox)
-     * {
-     * this.nodesSubscriptionBox = nodesSubscriptionBox;
-     * }
-     */
-    
     protected static SubscriptionAliveListener subscriptionAliveListener = new SubscriptionAliveListener()
     {
         public void onAlive(Subscription subscription)
