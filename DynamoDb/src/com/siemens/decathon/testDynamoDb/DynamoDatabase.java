@@ -23,9 +23,11 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
+import com.amazonaws.services.dynamodbv2.model.StreamSpecification;
+import com.amazonaws.services.dynamodbv2.model.StreamViewType;
+import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.prosysopc.ua.client.MonitoredDataItem;
-import com.siemens.decathon.Constants.OpcUAClientConstants;
-import com.amazonaws.services.dynamodbv2.util.TableUtils;;
+import com.siemens.decathon.Constants.OpcUAClientConstants;;
 
 public class DynamoDatabase {
 
@@ -50,11 +52,15 @@ public class DynamoDatabase {
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.ATTRIBUTE_COL_2)
 				.withAttributeType(ScalarAttributeType.S));
      
+		 StreamSpecification streamSpecification = new StreamSpecification()
+		            .withStreamEnabled(true)
+		            .withStreamViewType(StreamViewType.NEW_IMAGE);
+		 
 		CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.TABLE_NAME)
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.ATTRIBUTE_COL_1, KeyType.HASH))
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.ATTRIBUTE_COL_2, KeyType.RANGE))
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(attributeDefinitions);
+	             .withAttributeDefinitions(attributeDefinitions).withStreamSpecification(streamSpecification);
 		
 		try {
 		//	CreateTableResult result = client.createTable(createTableRequest);
