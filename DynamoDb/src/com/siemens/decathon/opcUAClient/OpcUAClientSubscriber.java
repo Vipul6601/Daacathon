@@ -45,7 +45,7 @@ public class OpcUAClientSubscriber {
 		
 		public void onDataChange(MonitoredDataItem node, DataValue prevValue, DataValue value) {
 			dynamoDatabase.updateTable(node);
-			System.err.println(node.getNodeId());
+			System.err.println(node.getNodeId().getValue()+"-------------"+node.getValue().getValue());
 			counter++;
 		}
 	};

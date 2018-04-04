@@ -49,8 +49,6 @@ public class DynamoDatabase {
 		List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.ATTRIBUTE_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
-		attributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.ATTRIBUTE_COL_2)
-				.withAttributeType(ScalarAttributeType.S));
      
 		 StreamSpecification streamSpecification = new StreamSpecification()
 		            .withStreamEnabled(true)
@@ -58,7 +56,6 @@ public class DynamoDatabase {
 		 
 		CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.TABLE_NAME)
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.ATTRIBUTE_COL_1, KeyType.HASH))
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.ATTRIBUTE_COL_2, KeyType.RANGE))
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
 	             .withAttributeDefinitions(attributeDefinitions).withStreamSpecification(streamSpecification);
 		
@@ -73,8 +70,9 @@ public class DynamoDatabase {
 
 	public void updateTable(MonitoredDataItem node) {
 		Map<String,AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(OpcUAClientConstants.ATTRIBUTE_COL_1,new AttributeValue().withS(node.getNodeId().toString()));
-        attributeValues.put(OpcUAClientConstants.ATTRIBUTE_COL_2,new AttributeValue().withS(node.getValue().toString()));
+        attributeValues.put(OpcUAClientConstants.ATTRIBUTE_COL_1,new AttributeValue().withS(node.getNodeId().getValue().toString()));
+        attributeValues.put(OpcUAClientConstants.ATTRIBUTE_COL_2,new AttributeValue().withS(node.getValue().getValue().toString()));
+        attributeValues.put(OpcUAClientConstants.ATTRIBUTE_COL_3,new AttributeValue().withS(node.getValue().getValue().toString()));
         PutItemRequest putItemRequest = new PutItemRequest().withTableName(OpcUAClientConstants.TABLE_NAME)
                 .withItem(attributeValues);
         PutItemResult putItemResult = client.putItem(putItemRequest);
