@@ -1,0 +1,26 @@
+<div class='main'>
+  <form #signupForm = "ngForm" (ng-submit)="onSubmitTemplateBased()">
+    <label>Related Power and Efficiency</label><br />
+     <input type="text" name="power" [(ngModel)]="power" required><br/>
+     
+     <label>Related Speed of Motor</label><br />
+     <input type="text" name="speed" [(ngModel)]="speed" required><br/>
+  
+     <label>Minimum and Rated Flow</label><br />
+     <input type="text" name="flow" [(ngModel)]="flow" required><br/>
+  
+     <label>Water Density</label><br />
+     <input type="text" name="density" [(ngModel)]="density"required><br/>
+
+     <label>Chracterstics</label><br />
+     <input type="text" name="characterstics" [(ngModel)]="characterstics" required><br/>
+  
+     <label>Threshold Limit</label><br />
+     <input type="text" name="threshold" [(ngModel)]="threshold" required>
+     <button  type="submit"   class="btn btn-success"   [disabled]="!signupForm.form.valid"> 
+     Submit
+</button>
+     
+  </form>
+
+</div>
