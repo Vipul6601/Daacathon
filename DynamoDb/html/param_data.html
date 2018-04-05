@@ -1,0 +1,84 @@
+<html>    
+    <head>    
+        <title>Configuration Screen</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+		<script src="configurationPageController.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+	</head> 
+<style>
+ .container {  
+  max-width: 1350px;  
+  width: 100%;  
+  margin: 50px;  
+  height: auto;  
+  display: block;  
+}  
+  
+body {  
+  color: #0000FF;  
+  font-size: 20px;  
+  font-family: Verdana, Arial, Helvetica, monospace;  
+  background-color: #F5F5DC;  
+}  
+  
+h2 {  
+  text-align: center;  
+}  
+  
+.form_group {  
+  padding: 10px;  
+  ;    
+display: block;  
+}  
+  
+
+.mytext {
+    width: 75px;
+	 height: 25px;  
+}
+label {  
+  float: left;  
+  padding-right: 30px;  
+  line-height:10%;  
+  display: block;  
+  width: 208px;  
+}  
+
+</style>	
+    <body ng-app="configurationApp">
+		<div ng-controller="configController">
+			<h2>Enter Configuration Data</h2>    
+			<form>    
+				<div class = "container">    
+					<div class = "form_group">    
+						<label>Rated Power</label>    
+						<input type = "text" name = "SignalName" ng-model="SignalName"  class="mytext"/>    
+					</div>    
+					<div class = "form_group">    
+						<label>Rated Speed</label>    
+						<input type = "text" name = "rspeed" ng-model="rspeed"  class="mytext"/>    
+					</div>    
+					<div class = "form_group">    
+						<label>Rated Flow</label>    
+						<input type = "text" name = "rflow" ng-model="rflow"  class="mytext" />    
+					</div>    
+					<div class = "form_group">    
+						<label>Water Density</label>    
+						<input type = "text" name = "wdensity" ng-model="wdensity"  class="mytext"/>    
+					</div>    
+					 <div class = "form_group">    
+						<label>Characterstics</label>    
+						<input type = "text" name = "charpump" ng-model="charpump"  class="mytext" />    
+					</div>    
+					<div class = "form_group">    
+						<label>Threshold</label>    
+						<input type = "text" name = "threshold" ng-model="threshold"   class="mytext"/>    
+					</div>    
+					<div class = "form_group">    
+						<button class="btn btn-default" ng-click="updateConfigData()">Update</button>  
+					</div>
+				</div>
+			</form>  
+		</div>
+    </body>    
+</html>    
