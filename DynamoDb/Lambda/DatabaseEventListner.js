@@ -11,27 +11,49 @@ exports.handler = function (event, context, callback) {
 		console.log('DynamoDB Record: %j', record.dynamodb);
 
 		if (record.eventName == "INSERT") {
-			var suctionPressure = record.dynamodb.Keys.SuctionPressure.S
-			var suctionTemperature = record.dynamodb.Keys.SuctionTemperature.S
-			updateDetails(suctionPressure,suctionTemperature);
+			var id = record.dynamodb.Keys.Id.S;
+			
+			var suctionPressure = parseInt(record.dynamodb.NewImage.SuctionPressure.S);
+			var dischargePressure =  parseInt(record.dynamodb.NewImage.DischargePressure.S);
+			var flowRate = parseInt(record.dynamodb.NewImage.FluidFlow.S);
+			var motorPowerInput = parseInt(record.dynamodb.NewImage.ElectricPower.S);
+			
+			var effeciencyRequest = {
+					"suctionPressure": suctionPressure,
+					"dischargePressure": dischargePressure,
+					"flowRate": flowRate,
+					"motorPowerInput": motorPowerInput,
+					"motorEfficiency": 0.96,
+				};
+			
+			var dynamicHeadRequest = {
+					"suctionPressure": suctionPressure,
+					"dischargePressure": dischargePressure,
+					"flowRate": flowRate,
+					"suctionDiameter": 1.5,
+					"dischargeDiameter": 1,
+					"suctionHeight": 1,
+					"dischargeHeight": 6,
+					"density": 1
+				}
+			
+			updateDetails(id,effeciencyRequest,dynamicHeadRequest);
 		}
 	});
 	callback(null, "message");
 };
 
-function updateDetails(suctionPressure,suctionTemperature) {
 
-	var table = "SignalTable";
+function updateDetails(id,effeciencyRequest,dynamicHeadRequest) {
+
+	var table = "MeasuredData";
 	AWS.config.update({
 		region: "ap-south-1"
 	});
 
 	var docClient = new AWS.DynamoDB.DocumentClient()
 
-	// var suctionPressure = "18";
-	// var suctionTemperature = "14";
-
-	//Calculate KPI 
+/*	//Calculate KPI 
 	var effeciencyRequest = {
 		"suctionPressure": 100,
 		"dischargePressure": 300,
@@ -49,20 +71,22 @@ function updateDetails(suctionPressure,suctionTemperature) {
 		"suctionHeight": 1,
 		"dischargeHeight": 6,
 		"density": 1
-	}
-	console.log(kpiCalculator.calculatePumpEffeciency(effeciencyRequest));
-	console.log(kpiCalculator.calculateDynamicHead(dynamicHeadRequest));
+	}*/
+	console.log("id"+id);
+	console.log("effeciencyRequest"+effeciencyRequest);
+	console.log("dynamicHeadRequest"+dynamicHeadRequest);
 
 	var calculatedPumpEffeciency = kpiCalculator.calculatePumpEffeciency(effeciencyRequest);
 	var calculatedDynamicHead = kpiCalculator.calculateDynamicHead(dynamicHeadRequest);
+	console.log("calculatedPumpEffeciency"+calculatedPumpEffeciency);
+	console.log("calculatedDynamicHead"+calculatedDynamicHead);
 
 
 	// Update the item, unconditionally,
 	var params = {
 		TableName: table,
 		Key: {
-			"SuctionPressure": suctionPressure,
-			"SuctionTemperature": suctionTemperature
+			"Id": id,
 		},
 		UpdateExpression: "set PumpEffeciency = :pumpEffeciency, DynamicHead = :dynamicHead",
 		ExpressionAttributeValues: {

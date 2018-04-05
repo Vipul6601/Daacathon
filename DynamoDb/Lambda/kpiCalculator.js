@@ -6,7 +6,7 @@ var kpiCalculator = {
         var motorPowerInput =  efficiencyRequest.motorPowerInput;
         var motorEfficiency =  efficiencyRequest.motorEfficiency;
 
-        var pumpEffeciency = ((dischargePressure - suctionPressure)*flowRate)/(2298*motorEfficiency*motorPowerInput);
+        var pumpEffeciency = ((dischargePressure - suctionPressure)*flowRate)*100/(2298*motorEfficiency*motorPowerInput);
         return pumpEffeciency;
 	},
 	calculateDynamicHead : function(dynamicHeadRequest){
