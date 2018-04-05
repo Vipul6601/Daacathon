@@ -9,7 +9,7 @@ public class OpcUAClientConstants {
 	public static final String TABLE_NAME ="Pump_Monitor9";
 
 
-	public static final String MEASURED_DATA_TABLE ="MeasuredData";
+	public static final String MEASURED_DATA_TABLE ="MeasuredData2";
 	public static final String MEASURED_DATA_COL_1 ="Id";
 	public static final String MEASURED_DATA_COL_2 ="SuctionTemp";
 	public static final String MEASURED_DATA_COL_3 ="DischargeTemp";

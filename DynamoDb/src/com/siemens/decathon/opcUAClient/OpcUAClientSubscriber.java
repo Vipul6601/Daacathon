@@ -1,7 +1,9 @@
 package com.siemens.decathon.opcUAClient;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.opcfoundation.ua.builtintypes.DataValue;
 import org.opcfoundation.ua.builtintypes.ExpandedNodeId;
@@ -11,13 +13,15 @@ import org.opcfoundation.ua.core.MonitoringMode;
 
 import com.prosysopc.ua.client.MonitoredDataItem;
 import com.prosysopc.ua.client.MonitoredDataItemListener;
+import com.siemens.decathon.Constants.OpcUAClientConstants;
 import com.siemens.decathon.testDynamoDb.DynamoDatabase;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 public class OpcUAClientSubscriber {
 	
-	
+	private int counter = 0;
 	private DynamoDatabase dynamoDatabase;
-	
+	private Map <String,AttributeValue> measuredMap  = new HashMap<String,AttributeValue>();
 	public OpcUAClientSubscriber() {
 			dynamoDatabase = new DynamoDatabase();
 	}
@@ -41,12 +45,19 @@ public class OpcUAClientSubscriber {
 	}
 	
 	private MonitoredDataItemListener dataChangeListener = new MonitoredDataItemListener() {
-		private int counter = 0;
+
 		
 		public void onDataChange(MonitoredDataItem node, DataValue prevValue, DataValue value) {
-		 //  dynamoDatabase.updateTable(node);
-			System.err.println(node.getNodeId().getValue()+"-------------"+node.getValue().getValue());
-			counter++;
+			
+			if(!measuredMap.containsKey(node.getNodeId().getValue().toString()))
+				measuredMap.put(node.getNodeId().getValue().toString(), new AttributeValue().withS(node.getValue().getValue().toString()));
+			else 
+			{
+				measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_1, new AttributeValue().withS(++counter+""));
+			 	dynamoDatabase.updateTable(measuredMap);
+				measuredMap.clear();
+				measuredMap.put(node.getNodeId().getValue().toString(), new AttributeValue().withS(node.getValue().getValue().toString()));
+			}	
 		}
 	};
 }

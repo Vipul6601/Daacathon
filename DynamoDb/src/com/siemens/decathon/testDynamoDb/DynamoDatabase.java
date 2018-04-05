@@ -3,7 +3,6 @@ package com.siemens.decathon.testDynamoDb;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.amazonaws.services.dynamodbv2.model.StreamSpecification;
 import com.amazonaws.services.dynamodbv2.model.StreamViewType;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.prosysopc.ua.client.MonitoredDataItem;
 import com.siemens.decathon.Constants.OpcUAClientConstants;;
 
 public class DynamoDatabase {
@@ -45,6 +43,7 @@ public class DynamoDatabase {
 			.withCredentials(new StaticCredentialsProvider(credentials)).build();
 	 dynamoDB = new DynamoDB(client);
 	 createTable();
+	 updateParameterizedTable();
 	}
 	
 	public void createTable()
@@ -69,15 +68,16 @@ public class DynamoDatabase {
 	             .withAttributeDefinitions(paramAttributeDefinitions).withStreamSpecification(streamSpecification);
 		
 		
-/*		CreateTableRequest createMeasuredTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
+		CreateTableRequest createMeasuredTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.MEASURED_DATA_COL_1, KeyType.HASH))
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(measuredAttributeDefinitions).withStreamSpecification(streamSpecification);*/
+	             .withAttributeDefinitions(measuredAttributeDefinitions).withStreamSpecification(streamSpecification);
 		
 		try {
 		//	CreateTableResult result = client.createTable(createTableRequest);
 			TableUtils.createTableIfNotExists(client,createParamTableRequest);
-//			TableUtils.createTableIfNotExists(client,createMeasuredTableRequest);
+			TableUtils.createTableIfNotExists(client,createMeasuredTableRequest);
+			
 			
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());
@@ -85,42 +85,33 @@ public class DynamoDatabase {
 		}
 	}
 
-	public void updateTable(MonitoredDataItem node) {
+	public void updateTable(Map<String,AttributeValue> measuredMap) {
+		Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
+	    String currentTimeStamp = sdf.format(cal.getTime());   
+	    measuredMap.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
+		PutItemRequest putDataMeasured = new PutItemRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
+                .withItem(measuredMap);
+        PutItemResult putItemResult = client.putItem(putDataMeasured);
+	}
+	public void updateParameterizedTable(){
+		 
 		Calendar cal = Calendar.getInstance();
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
 	    String currentTimeStamp = sdf.format(cal.getTime());
-
-	/*	Map<String,AttributeValue> measuredAttributeValues = new HashMap<>();
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_1,new AttributeValue().withS(node.getNodeId().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_2,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_3,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_4,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_5,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_6,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_7,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_8,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_9,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_10,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.MEASURED_DATA_COL_11,new AttributeValue().withS(node.getValue().getValue().toString()));
-        measuredAttributeValues.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
-        
-        PutItemRequest putDataMeasured = new PutItemRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
-                .withItem(attributeValues);
-        PutItemResult putItemResult = client.putItem(putItemRequest);*/
-        
-    	Map<String,AttributeValue> parameterizedAttributeValues = new HashMap<>();
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1,new AttributeValue().withS("10"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_2,new AttributeValue().withS("20"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_3,new AttributeValue().withS("30"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_4,new AttributeValue().withS("40"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_5,new AttributeValue().withS("50"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new AttributeValue().withS("60"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new AttributeValue().withS("70"));
-    	parameterizedAttributeValues.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
-        
-        PutItemRequest putDataParam = new PutItemRequest().withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
-                .withItem(parameterizedAttributeValues);
-        PutItemResult putItemResult1 = client.putItem(putDataParam);
-	
+	        
+	   	Map<String,AttributeValue> parameterizedAttributeValues = new HashMap<>();
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1,new AttributeValue().withS("10"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_2,new AttributeValue().withS("20"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_3,new AttributeValue().withS("30"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_4,new AttributeValue().withS("40"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_5,new AttributeValue().withS("50"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new AttributeValue().withS("60"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new AttributeValue().withS("70"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
+	        
+	    PutItemRequest putDataParam = new PutItemRequest().withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
+	              .withItem(parameterizedAttributeValues);
+	    PutItemResult putItemResult1 = client.putItem(putDataParam);
 	}
 }
