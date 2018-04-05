@@ -9,7 +9,7 @@ public class OpcUAClientConstants {
 	public static final String TABLE_NAME ="Pump_Monitor9";
 
 
-	public static final String MEASURED_DATA_TABLE ="MeasuredData2";
+	public static final String MEASURED_DATA_TABLE ="MeasuredData";
 	public static final String MEASURED_DATA_COL_1 ="Id";
 	public static final String MEASURED_DATA_COL_2 ="SuctionTemp";
 	public static final String MEASURED_DATA_COL_3 ="DischargeTemp";
@@ -32,8 +32,8 @@ public class OpcUAClientConstants {
 	public static final String PARAMETERIZED_DATA_COL_7 ="RatedFlow";
 
 	
-	public static final String ACCESS_KEY = "TestAccessKey";
-	public static final String SECRET_KEY = "TestSecretKey";
+	public static final String ACCESS_KEY = "AKIAJGILNHXJODMWTVUQ";
+	public static final String SECRET_KEY = "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";
 	public static final String URL = "http://localhost:8000";
 	
 }

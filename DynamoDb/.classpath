@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_51"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_67"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal_lib/antlr-runtime-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal_lib/Apache-HttpComponents-HttpClient-4.5.x.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal_lib/Apache-HttpComponents-HttpCore-4.4.x.jar"/>
@@ -48,8 +48,5 @@
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal_lib/sqlite4java.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/thirdPartyLib/org-apache-commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Z003V02J/Desktop/DAAC-A-THON/bclcrypto.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Z003V02J/Desktop/DAAC-A-THON/log4j-1.2.17_t3k.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Z003V02J/Desktop/DAAC-A-THON/opcua_sdk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

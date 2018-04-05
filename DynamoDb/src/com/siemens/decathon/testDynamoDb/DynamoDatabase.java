@@ -35,11 +35,15 @@ public class DynamoDatabase {
 	AWSCredentials credentials;
 	AmazonDynamoDB client;
 	DynamoDB dynamoDB;
+	
+	public static void main(String[] args) {
+		new DynamoDatabase();
+	}
 	public DynamoDatabase()
 	{
 	 credentials = new BasicAWSCredentials(OpcUAClientConstants.ACCESS_KEY, OpcUAClientConstants.SECRET_KEY);
-	 client = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(
-					new AwsClientBuilder.EndpointConfiguration(OpcUAClientConstants.URL, Regions.AP_SOUTH_1.name()))
+	 client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)/*withEndpointConfiguration(
+					new AwsClientBuilder.EndpointConfiguration(OpcUAClientConstants.URL, Regions.AP_SOUTH_1.name()))*/
 			.withCredentials(new StaticCredentialsProvider(credentials)).build();
 	 dynamoDB = new DynamoDB(client);
 	 createTable();
