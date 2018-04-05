@@ -36,7 +36,7 @@ var app = angular.module('configurationApp',[]);
 			}
 		}					
 	  }
-	  alert("ssssssssss"+dbValues);			
+	//  alert("ssssssssss"+dbValues);			
 
 	$scope.SignalName=dbValues[0];
 	$scope.rspeed=dbValues[1];
@@ -63,15 +63,35 @@ var app = angular.module('configurationApp',[]);
 			};
 		
 			console.log('table data', $scope.SignalName);
-			/*var params = {
-				TableName : "ParamaterizedData",		
-				//Item :$scope.submitConfigData
-				Key : $scope.submitConfigData
-			};		
-	var ddb = new AWS.DynamoDB() ;
-	 ddb.updateItem(params, function(err, data) {
-        if (err) { return console.log(err); }
-        console.log("We updated the table with this: " + JSON.stringify(data));
+		var params = {
+		TableName: "ParamaterizedData",
+		Key: {
+			
+			"Id": "10"
+		},
+		UpdateExpression: "set RatedPower = :ratedPower, RatedEfficiency = :ratedEfficiency , RatedSpeed = :ratedSpeed ,RatedFlow = :ratedFlow",
+		ExpressionAttributeValues: {
+			":ratedPower":  "100",
+			":ratedEfficiency":  "100",
+			":ratedSpeed":  "100" ,
+			":ratedFlow":  "100"
+
+		},
+		ReturnValues: "UPDATED_NEW"
+	};
+	/*var ddb = new AWS.DynamoDB() ;
+		ddb.updateItem(params, function(err, data) {
+			if (err) { return console.log(err); }
+			console.log("We updated the table with this: " + JSON.stringify(data));
     });*/
+		console.log("Updating the item...");
+	docClient.update(params, function (err, data) {
+		if (err) {
+			console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+		} else {
+			console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+		}
+	});
+
  }
 });
