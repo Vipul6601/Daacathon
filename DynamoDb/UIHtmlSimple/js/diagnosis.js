@@ -1,14 +1,14 @@
  
 var awsConfig = {
 
-    // "region" : region,
+    "region" : region,
     // // "endpoint" :endpoint,
-    // "accessKeyId" : accessKeyId,
-    // "secretAccessKey" : secretAccessKey	
+     "accessKeyId" : accessKeyId,
+     "secretAccessKey" : secretAccessKey	
 
-	"region" : "us-west-2",
-	"accessKeyId" : "AKIAJAC4FNRBNLX7ZGGA",
-	"secretAccessKey" : "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"	
+	// "region" : "us-west-2",
+	// "accessKeyId" : "AKIAJAC4FNRBNLX7ZGGA",
+	// "secretAccessKey" : "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"	
 };			   
 AWS.config.update(awsConfig);
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -16,8 +16,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 var scanExecute = function() {
 	var params = {
-			//TableName : "Pump_Monitor5"
-			TableName : "DummyTable"
+			TableName : "MeasuredData"
 		};	
 		console.log("read f");
 		//debugger;
@@ -28,14 +27,17 @@ var scanExecute = function() {
 		   	console.log("error");
        } else {
 		console.log("records" + data);		
-		var graphData=[];		
+        var xAxisData=[];
+        var yAxisData =[];		
+		
 		for(var index=0; index<data.Items.length ;index++){
-			graphData.push(data.Items[index].SignalValue);
+            xAxisData.push(data.Items[index].FluidFlow);
+            yAxisData.push(data.Items[index].PumpEffeciency);
 		}
 					
- var data = [ { label: "Data Set 1", 
-               x: graphData, 
-               y: [0, 1]
+ var data = [ { label: "Flow vs Efficiency", 
+               x: xAxisData, 
+               y: yAxisData
           //    { label: "Data Set 2", 
                // x: [0, 1, 2, 3, 4], 
                // y: [0, 1, 4, 9, 16]
@@ -46,8 +48,8 @@ var scanExecute = function() {
 		var xy_chart = d3_xy_chart()
 	    // .width(960)
 	    // .height(500)
-	    .xlabel("X Axis")
-	    .ylabel("Y Axis") ;
+	    .xlabel("Flow")
+	    .ylabel("Pump Efficiency") ;
 		
 		var svg = d3.select("#graph").append("svg")
 	    .datum(data)
