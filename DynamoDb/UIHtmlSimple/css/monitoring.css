@@ -10,3 +10,11 @@
     font-family: 'Allerta Stencil';  
     padding: 10px 0;  
 }
+
+.statusHeading
+{
+    text-align: center;
+    font-size: 18px;
+    font-family: 'Allerta Stencil';  
+    color: blue;
+}

@@ -39,7 +39,21 @@ var kpiCalculator = {
         var pumpHead = dischargeHead - suctionHead + gauageElevationDifference;
 
         return pumpHead;
-	},
+        },
+        calculateMotorStatus : function(motorStatusRequest){
+                var suctionPressure = motorStatusRequest.suctionPressure;
+                var dischargePressure = motorStatusRequest.dischargePressure;
+                var flowRate =  motorStatusRequest.flowRate;
+                var motorStatus = "Normal";
+                 if(suctionPressure == 0 && dischargePressure == 0 && flowRate == 0)
+                 {
+                        motorStatus = "Dry Running";
+                 }else if(suctionPressure > 0 && dischargePressure > 0 && flowRate == 0)
+                 {
+                        motorStatus = "Blockage";
+                 }
+                return motorStatus;
+        }
 };
 console.log('[@kpiCalculator] kpiCalculator = ', kpiCalculator);
 module.exports = kpiCalculator;

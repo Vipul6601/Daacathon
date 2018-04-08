@@ -12,39 +12,44 @@ exports.handler = function (event, context, callback) {
 
 		if (record.eventName == "INSERT") {
 			var id = record.dynamodb.Keys.Id.S;
-			
+
 			var suctionPressure = parseInt(record.dynamodb.NewImage.SuctionPressure.S);
-			var dischargePressure =  parseInt(record.dynamodb.NewImage.DischargePressure.S);
+			var dischargePressure = parseInt(record.dynamodb.NewImage.DischargePressure.S);
 			var flowRate = parseInt(record.dynamodb.NewImage.FluidFlow.S);
 			var motorPowerInput = parseInt(record.dynamodb.NewImage.ElectricPower.S);
-			
+
 			var effeciencyRequest = {
-					"suctionPressure": suctionPressure,
-					"dischargePressure": dischargePressure,
-					"flowRate": flowRate,
-					"motorPowerInput": motorPowerInput,
-					"motorEfficiency": 0.96,
-				};
-			
+				"suctionPressure": suctionPressure,
+				"dischargePressure": dischargePressure,
+				"flowRate": flowRate,
+				"motorPowerInput": motorPowerInput,
+				"motorEfficiency": 0.96,
+			};
+
 			var dynamicHeadRequest = {
-					"suctionPressure": suctionPressure,
-					"dischargePressure": dischargePressure,
-					"flowRate": flowRate,
-					"suctionDiameter": 1.5,
-					"dischargeDiameter": 1,
-					"suctionHeight": 1,
-					"dischargeHeight": 6,
-					"density": 1
-				}
-			
-			updateDetails(id,effeciencyRequest,dynamicHeadRequest);
+				"suctionPressure": suctionPressure,
+				"dischargePressure": dischargePressure,
+				"flowRate": flowRate,
+				"suctionDiameter": 1.5,
+				"dischargeDiameter": 1,
+				"suctionHeight": 1,
+				"dischargeHeight": 6,
+				"density": 1
+			}
+			var motorStatusRequest = {
+				"suctionPressure": suctionPressure,
+				"dischargePressure": dischargePressure,
+				"flowRate": flowRate
+			}
+
+			updateDetails(id, effeciencyRequest, dynamicHeadRequest, motorStatusRequest);
 		}
 	});
 	callback(null, "message");
 };
 
 
-function updateDetails(id,effeciencyRequest,dynamicHeadRequest) {
+function updateDetails(id, effeciencyRequest, dynamicHeadRequest, motorStatusRequest) {
 
 	var table = "MeasuredData";
 	AWS.config.update({
@@ -53,33 +58,36 @@ function updateDetails(id,effeciencyRequest,dynamicHeadRequest) {
 
 	var docClient = new AWS.DynamoDB.DocumentClient()
 
-/*	//Calculate KPI 
-	var effeciencyRequest = {
-		"suctionPressure": 100,
-		"dischargePressure": 300,
-		"flowRate": 600,
-		"motorPowerInput": 100,
-		"motorEfficiency": 0.96,
-	};
-
-	var dynamicHeadRequest = {
-		"suctionPressure": 5,
-		"dischargePressure": 80,
-		"flowRate": 70,
-		"suctionDiameter": 1.5,
-		"dischargeDiameter": 1,
-		"suctionHeight": 1,
-		"dischargeHeight": 6,
-		"density": 1
-	}*/
-	console.log("id"+id);
-	console.log("effeciencyRequest"+effeciencyRequest);
-	console.log("dynamicHeadRequest"+dynamicHeadRequest);
+	/*	//Calculate KPI 
+		var effeciencyRequest = {
+			"suctionPressure": 100,
+			"dischargePressure": 300,
+			"flowRate": 600,
+			"motorPowerInput": 100,
+			"motorEfficiency": 0.96,
+		};
+	
+		var dynamicHeadRequest = {
+			"suctionPressure": 5,
+			"dischargePressure": 80,
+			"flowRate": 70,
+			"suctionDiameter": 1.5,
+			"dischargeDiameter": 1,
+			"suctionHeight": 1,
+			"dischargeHeight": 6,
+			"density": 1
+		}*/
+	console.log("id" + id);
+	console.log("effeciencyRequest" + effeciencyRequest);
+	console.log("dynamicHeadRequest" + dynamicHeadRequest);
 
 	var calculatedPumpEffeciency = kpiCalculator.calculatePumpEffeciency(effeciencyRequest);
 	var calculatedDynamicHead = kpiCalculator.calculateDynamicHead(dynamicHeadRequest);
-	console.log("calculatedPumpEffeciency"+calculatedPumpEffeciency);
-	console.log("calculatedDynamicHead"+calculatedDynamicHead);
+	var calculatedMotorStatus = kpiCalculator.calculateMotorStatus(motorStatusRequest);
+	
+	console.log("calculatedPumpEffeciency" + calculatedPumpEffeciency);
+	console.log("calculatedDynamicHead" + calculatedDynamicHead);
+	console.log("calculatedMotorStatus" + calculatedMotorStatus);
 
 
 	// Update the item, unconditionally,
@@ -88,10 +96,11 @@ function updateDetails(id,effeciencyRequest,dynamicHeadRequest) {
 		Key: {
 			"Id": id,
 		},
-		UpdateExpression: "set PumpEffeciency = :pumpEffeciency, DynamicHead = :dynamicHead",
+		UpdateExpression: "set PumpEffeciency = :pumpEffeciency, DynamicHead = :dynamicHead, MotorStatus = :motorStatus",
 		ExpressionAttributeValues: {
 			":pumpEffeciency": calculatedPumpEffeciency,
-			":dynamicHead": calculatedDynamicHead
+			":dynamicHead": calculatedDynamicHead,
+			":motorStatus":calculatedMotorStatus
 		},
 		ReturnValues: "UPDATED_NEW"
 	};

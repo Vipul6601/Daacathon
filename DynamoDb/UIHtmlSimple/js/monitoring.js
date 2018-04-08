@@ -47,6 +47,11 @@ var app = angular.module('monitoringApp',[]);
             rowData.push(data.Items[index].TimeStamp); 
 
             tableData.push(rowData);
+
+            if(index == data.Items.length-1)
+            {
+                $scope.motorStatus = data.Items[index].MotorStatus;
+            }
         
         }		
 
