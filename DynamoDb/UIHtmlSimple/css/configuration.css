@@ -1,0 +1,23 @@
+
+  h2 {  
+    text-align: center;  
+  }  
+
+  label{
+      font-size: 18px;
+      font-family: 'Allerta Stencil';
+  }
+    
+  .main-heading{
+    font-size: 24px;
+    font-weight: bold;
+}
+#page-content-wrapper input
+{
+    font-size: 15px;
+    font-family: 'Allerta Stencil';
+}
+.formPadding
+{
+    padding: 10px 0;
+}

@@ -1,0 +1,12 @@
+.main-heading{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.subHeading
+{
+    font-size: 22px;
+    text-align: center;
+    font-family: 'Allerta Stencil';  
+    padding: 10px 0;  
+}

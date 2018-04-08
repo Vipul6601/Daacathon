@@ -1,0 +1,33 @@
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.grid path,
+.grid line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.25);
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2.5px;
+}
+.main-heading{
+    font-size: 24px;
+    font-weight: bold;
+}
+/* #graph
+{
+    height: 50%;
+    width: 50%;
+    float: left;
+} */

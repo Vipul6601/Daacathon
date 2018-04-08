@@ -1,0 +1,114 @@
+<html>
+
+<head>
+	<title>Configuration Screen</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+	<script src="../js/awscredentials.js"></script>
+	<script src="../js/configuration.js"></script>
+	<link href="../css/simple-sidebar.css" rel="stylesheet">
+	<link href="../css/configuration.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="../css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body ng-app="configurationApp">
+	<div ng-controller="configController">
+
+		<div id="wrapper" class="toggled">
+
+			<!-- Sidebar -->
+			<div id="sidebar-wrapper">
+				<ul class="sidebar-nav">
+					<li class="sidebar-brand">
+						<a href="index.html">
+							Pump Monitor
+						</a>
+					</li>
+					<li class="nav-items">
+						<a href="diagnosis.html">Daignosis</a>
+					</li>
+					<li class="nav-items">
+						<a href="monitoring.html">Monitoring</a>
+					</li>
+					<li class="nav-items">
+						<a href="#">Vibration</a>
+					</li>
+					<li class="nav-items">
+						<a href="configuration.html">Configuration</a>
+					</li>
+					<li class="nav-items">
+						<a href="#">Test Data</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /#sidebar-wrapper -->
+
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<div class="container-fluid">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<label class="main-heading">Configuration</label>
+						</div>
+						<div class="panel-body">
+							<h2>
+								<label class="control-label"> Configuration Data</label>
+							</h2>
+							<form class="form-horizontal">
+								<div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Rated Power</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" class="form-control " name="SignalName" ng-model="SignalName" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Rated Speed</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" name="rspeed" ng-model="rspeed" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Rated Flow</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" name="rflow" ng-model="rflow" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Water Density</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" name="wdensity" ng-model="wdensity" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Characterstics</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" name="charpump" ng-model="charpump" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-xs-4">Threshold</label>
+										<div class="col-xs-6 formPadding">
+											<input type="text" name="threshold" ng-model="threshold" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-xs-offset-9 col-xs-1">
+											<button class="btn btn-primary btn-lg" ng-click="updateConfigData()">Update</button>
+										</div>
+									</div>
+
+							</form>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- /#page-content-wrapper -->
+			</div>
+		</div>
+</body>
+
+</html>s
