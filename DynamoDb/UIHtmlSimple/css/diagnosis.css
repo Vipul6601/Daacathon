@@ -25,6 +25,12 @@
     font-size: 24px;
     font-weight: bold;
 }
+.subHeading
+{
+    font-size: 22px;
+    font-family: 'Allerta Stencil';  
+    padding: 10px 0;  
+}
 /* #graph
 {
     height: 50%;

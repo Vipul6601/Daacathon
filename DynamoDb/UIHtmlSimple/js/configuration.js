@@ -70,13 +70,11 @@ var app = angular.module('configurationApp',[]);
 			
 			"Id": "10"
 		},
-		UpdateExpression: "set RatedPower = :ratedPower, RatedEfficiency = :ratedEfficiency , RatedSpeed = :ratedSpeed ,RatedFlow = :ratedFlow",
+		UpdateExpression: "set RatedPower = :ratedPower, RatedSpeed = :ratedSpeed ,RatedFlow = :ratedFlow",
 		ExpressionAttributeValues: {
-			":ratedPower":  "100",
-			":ratedEfficiency":  "100",
-			":ratedSpeed":  "100" ,
-			":ratedFlow":  "100"
-
+			":ratedPower":  $scope.SignalName,
+			":ratedSpeed":  $scope.rspeed ,
+			":ratedFlow":  $scope.rflow
 		},
 		ReturnValues: "UPDATED_NEW"
 	};
