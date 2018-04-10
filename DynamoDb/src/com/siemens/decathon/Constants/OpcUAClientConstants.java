@@ -36,6 +36,9 @@ public class OpcUAClientConstants {
 	public static final String TEST_DATA_COL_2 ="FluidFlow";
 	public static final String TEST_DATA_COL_3 ="TDH";
 	public static final String TEST_DATA_COL_4 ="Efficiency";
+	
+	public static final String VIBRATION_TRAINING_TABLE ="VibrationTraining";
+	public static final String VIBRATION_TRAINING_TABLE_COL_1 ="Id";
 		
 	public static final String ACCESS_KEY = "AKIAISHQPWVFJOVJEDGQ";
 	public static final String SECRET_KEY = "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";
