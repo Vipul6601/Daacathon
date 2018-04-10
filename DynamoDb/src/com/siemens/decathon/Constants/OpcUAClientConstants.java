@@ -31,9 +31,14 @@ public class OpcUAClientConstants {
 	public static final String PARAMETERIZED_DATA_COL_6 ="ThresholdLimits";
 	public static final String PARAMETERIZED_DATA_COL_7 ="RatedFlow";
 
-	
-	public static final String ACCESS_KEY = "AKIAJGILNHXJODMWTVUQ";
-	public static final String SECRET_KEY = "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";
-	public static final String URL = "http://localhost:8000";
+	public static final String TEST_DATA_TABLE ="TestData";
+	public static final String TEST_DATA_COL_1 ="Id";
+	public static final String TEST_DATA_COL_2 ="FluidFlow";
+	public static final String TEST_DATA_COL_3 ="TDH";
+	public static final String TEST_DATA_COL_4 ="Efficiency";
+		
+	public static final String ACCESS_KEY = "AKIAISHQPWVFJOVJEDGQ";
+	public static final String SECRET_KEY = "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";
+	public static final String URL = "http://localhost:8001";
 	
 }

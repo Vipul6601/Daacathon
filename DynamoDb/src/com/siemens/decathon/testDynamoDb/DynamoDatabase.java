@@ -48,6 +48,7 @@ public class DynamoDatabase {
 	 dynamoDB = new DynamoDB(client);
 	 createTable();
 	 updateParameterizedTable();
+	 
 	}
 	
 	public void createTable()
@@ -65,7 +66,10 @@ public class DynamoDatabase {
 		measuredAttributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.MEASURED_DATA_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
 
-
+		List<AttributeDefinition> testDataAttributeDefinitions = new ArrayList<>();
+		testDataAttributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
+				.withAttributeType(ScalarAttributeType.S));
+		
 		CreateTableRequest createParamTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1, KeyType.HASH))
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
@@ -77,10 +81,16 @@ public class DynamoDatabase {
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
 	             .withAttributeDefinitions(measuredAttributeDefinitions).withStreamSpecification(streamSpecification);
 		
+		CreateTableRequest createTestTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.TEST_DATA_TABLE)
+	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.TEST_DATA_COL_1, KeyType.HASH))
+	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
+	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
+		
 		try {
 		//	CreateTableResult result = client.createTable(createTableRequest);
 			TableUtils.createTableIfNotExists(client,createParamTableRequest);
 			TableUtils.createTableIfNotExists(client,createMeasuredTableRequest);
+			TableUtils.createTableIfNotExists(client, createTestTableRequest);
 			
 			
 		} catch (AmazonServiceException e) {
@@ -105,16 +115,15 @@ public class DynamoDatabase {
 	    String currentTimeStamp = sdf.format(cal.getTime());
 	        
 	   	Map<String,AttributeValue> parameterizedAttributeValues = new HashMap<>();
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1,new AttributeValue().withS("10"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_2,new AttributeValue().withS("20"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_3,new AttributeValue().withS("30"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_4,new AttributeValue().withS("40"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_5,new AttributeValue().withS("50"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new AttributeValue().withS("60"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new AttributeValue().withS("70"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_1,new AttributeValue().withS("1"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_2,new AttributeValue().withS("0"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_3,new AttributeValue().withS("40.55"));
+	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_4,new AttributeValue().withS("2.06"));
+	   	//parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new AttributeValue().withS("60"));
+	   	//parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new AttributeValue().withS("70"));
 	   	parameterizedAttributeValues.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
 	        
-	    PutItemRequest putDataParam = new PutItemRequest().withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
+	    PutItemRequest putDataParam = new PutItemRequest().withTableName(OpcUAClientConstants.TEST_DATA_TABLE)
 	              .withItem(parameterizedAttributeValues);
 	    PutItemResult putItemResult1 = client.putItem(putDataParam);
 	}

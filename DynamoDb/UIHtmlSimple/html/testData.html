@@ -2,6 +2,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link href="../css/testData.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+<script src="../js/awscredentials.js"></script>
+<script src="../js/testData.js"></script>
+
 <script type="text/javascript">
 $(function () {
     $("#upload").bind("click", function () {
@@ -10,7 +16,7 @@ $(function () {
             if (typeof (FileReader) != "undefined") {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    var table = $("<table class='responsive-table'/>");
+                    var table = $("<table class='responsive-table' id='testData'/>");
                     //table.setAttribute('class', 'responsive-table');
                     //table.addClass = "pure-table";
                     var rows = e.target.result.split("\n");
@@ -63,12 +69,17 @@ $(function () {
     });
 });
 </script>
+<body ng-app="testDataApp">
+    
 <h1 style="text-align:  center;"> Interpolation points of characteristics</h1>
 <br>
 <input type="file" id="fileUpload" />
 <input type="button" id="upload" value="Upload" />
 <hr />
-<div id="dvCSV">
+<div ng-controller="testController">
+<div id="dvCSV"></div>
+<button class="btn btn-primary btn-lg" ng-click="updateConfigData()">Update</button>
 </div>
 
-<input type="button" id="Teach" value="Teach" />
+
+</body>
