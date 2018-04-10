@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Angular Js XLS</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/xlsx.full.min.js"></script>
+		<script type="text/javascript" src="../js/angular-js-xlsx.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.8/xlsx.full.min.js">
+		</script>
+		<script type="text/javascript">
+			angular.module('MyApp', ['angular-js-xlsx'])
+			.controller('myController', function($scope) {
+	
+				$scope.ExcelExport= function (event) {
+	
+	
+	var input = event.target;
+	var reader = new FileReader();
+	reader.onload = function(){
+		var fileData = reader.result;
+		var wb = XLSX.read(fileData, {type : 'binary'});
+	
+		wb.SheetNames.forEach(function(sheetName){
+		var rowObj =XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);
+		var jsonObj = JSON.stringify(rowObj);
+		console.log(jsonObj)
+		})
+	};
+	reader.readAsBinaryString(input.files[0]);
+	};
+	
+				$scope.error = function (e) {
+					console.log(e);
+				}
+			});
+		</script>
+	
+	</head>
+
+	<body ng-app="MyApp">
+		<input type="file" id="file" ng-model="csvFile"  
+		onchange="ExcelExport(event)"/>
+	</body>
+
+	
+</html>
