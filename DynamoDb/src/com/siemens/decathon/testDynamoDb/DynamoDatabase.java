@@ -86,12 +86,30 @@ public class DynamoDatabase {
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
 	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
 		
+	CreateTableRequest createVibrationTrainingTableRequestImp1 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_ONE)
+	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
+	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
+	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
+				 
+     CreateTableRequest createVibrationTrainingTableRequestImp2 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_TWO)
+	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
+	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
+				 .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
+	
+	 CreateTableRequest createVibrationTrainingTableRequestImp3 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_THREE)
+	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
+	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
+	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
+	
 		try {
 		//	CreateTableResult result = client.createTable(createTableRequest);
 			TableUtils.createTableIfNotExists(client,createParamTableRequest);
 			TableUtils.createTableIfNotExists(client,createMeasuredTableRequest);
 			TableUtils.createTableIfNotExists(client, createTestTableRequest);
-			
+			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp1);
+			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp2);
+			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp3);
+
 			
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());
