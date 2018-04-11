@@ -1,0 +1,55 @@
+.importFile
+{
+    float: right;
+}
+
+.cellElement
+{
+    width: 100%;
+}
+    
+.importCell{
+    width: 33.33%;
+    float: left;
+    padding: 0 10px 10px 10px;
+}
+
+.testCell{
+    width: 66.66%;
+    float: left;
+    padding: 0 10px 10px 10px;
+} 
+
+.importButton{
+    width: 50%;
+    margin: 0 auto;
+}
+
+.testButton{
+    width: 66.66%;
+    padding: 0 10px 0px 10px;
+}
+
+.row
+{
+display: flex;
+width:100%;
+padding-top: 5px;
+
+}
+
+.equalBlocks
+{
+    width: 50%;
+    float: left;
+}
+
+.centerAlign
+{
+    margin: 0 auto;
+}
+
+.main-heading{
+    font-size: 24px;
+    font-weight: bold;
+}

@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,62 +11,157 @@
     <title>Pump Monitoring System</title>
 
     <!-- Bootstrap core CSS -->
-<link href="../css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!-- Custom styles for this template -->
-<link href="../css/simple-sidebar.css" rel="stylesheet">
-<link href="../css/diagnosis.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+    <link href="../css/vibration.css" rel="stylesheet">
 
-<script src="http://d3js.org/d3.v3.js"></script>
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
-<script src="../js/awscredentials.js"></script>
-<script src="../js/diagnosis.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+
+    <script src="../js/Chart.js"></script>
+    <script src="../js/angular-chart.min.js"></script>
+    <script src="../js/tc-angular-chartjs.js"></script>
+
+
+    <script src="../js/awscredentials.js"></script>
+    <script src="../js/vibration.js"></script>
 </head>
 
-<body>
+<body ng-app="vibrationApp">
+    <div ng-controller="vibrationController">
 
-    <div id="wrapper" class="toggled">
+        <div id="wrapper" class="toggled">
 
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="index.html">
-                        Pump Monitor
-                    </a>
-                </li>
-                <li class="nav-items">
-                    <a href="diagnosis.html">Daignosis</a>
-                </li>
-                <li class="nav-items">
-                    <a href="monitoring.html">Monitoring</a>
-                </li>
-                <li class="nav-items">
-                    <a href="#">Vibration</a>
-                </li>
-                <li class="nav-items">
-                    <a href="configuration.html">Configuration</a>
-                </li>
-                <li class="nav-items">
-                    <a href="#">Test Data</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="index.html">
+                            Pump Monitor
+                        </a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="diagnosis.html">Daignosis</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="monitoring.html">Monitoring</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="#">Vibration</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="configuration.html">Configuration</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="#">Test Data</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <label class="main-heading">Diagnosis</label>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="subHeading"> Flow Vs Effeciency</div>
-                        <div id="graph"></div>
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label class="main-heading">Vibration Analytics</label>
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Training Zone</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="importCell">
+                                            <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Impellar Wear Combination 1</button>
+                                        </div>
+                                        <div class="importCell">
+                                            <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Impellar Wear Combination 2</button>
+                                        </div>
+                                        <div class="importCell">
+                                            <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Impellar Wear Combination 3</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="importCell">
+                                            <input id="impellar1Data" type="file" class="cellElement" />
+                                        </div>
+                                        <div class="importCell">
+                                            <input id="impellar2Data" type="file" class="cellElement" />
+                                        </div>
+                                        <div class="importCell">
+                                            <input id="impellar3Data" type="file" class="cellElement" />
+                                        </div>
+                                    </div>
 
-                        
+                                    <div style="padding-top: 25px;" class="row">
+                                        <div class="importButton">
+                                            <button type="button" ng-click="ExportToTable()" class="btn btn-warning btn-block">Train Model</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Testing Arena</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="equalBlocks">
+                                        <div class="row">
+                                            <div class="testCell">
+                                                <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Impellar Wear Real Data</button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="testCell">
+                                                <input type="file" class="" />
+                                            </div>
+                                        </div>
+                                        <div style="padding-top: 25px;" class="row">
+                                            <div class="testButton">
+                                                <button type="button" ng-click="getDataFromDynamoDb()" class="btn btn-info btn-block">Test Model</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="equalBlocks">
+                                        <div class="panel panel-danger">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Predicted Faults</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Row</th>
+                                                            <th>Fault Name</th>
+                                                            <th>Catgory</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Visualization Platform</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <canvas id="myChart" width="" height=""></canvas>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -74,6 +169,7 @@
         </div>
         <!-- /#page-content-wrapper -->
 
+    </div>
     </div>
 </body>
 
