@@ -6,18 +6,18 @@ app.controller('vibrationController', function ($scope) {
     var tableData = [];
 
     $scope.ExportToTable = function () {
-        tableData = loadExcelFile("#impellar1Data", "VibrationTrainingImpellar1");
+        tableData = loadExcelFile("#impellar1Data", "VibrationTrainingImpellar1",false);
 
-        //   tableData = loadExcelFile("#impellar2Data","VibrationTrainingImpellar2");
-        //   updateRecordInDynamoDb(tableData);
+        tableData = loadExcelFile("#impellar2Data","VibrationTrainingImpellar2",false);
+    
+        tableData = loadExcelFile("#impellar3Data","VibrationTrainingImpellar3",false);
+    };
 
-        //   tableData = loadExcelFile("#impellar3Data","VibrationTrainingImpellar3");
-        //   updateRecordInDynamoDb(tableData);
-
+    $scope.UploadTestData = function () {
+        tableData = loadExcelFile("#testData", "VibrationTesting",true);
     };
 
     $scope.getDataFromDynamoDb = function () {
-
         getTestingDataFromDynamoDB();
     }
     $scope.plotGraph = function () {
@@ -26,7 +26,7 @@ app.controller('vibrationController', function ($scope) {
 
 });
 
-function loadExcelFile(fileName, tableName) {
+function loadExcelFile(fileName, tableName,isTestingData) {
     var tableData = [];
     var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
 
@@ -63,7 +63,10 @@ function loadExcelFile(fileName, tableName) {
                     }
                     if (exceljson.length > 0 && cnt == 0) {
 
-                        tableData = getTableSheetData(exceljson, tableName);
+                        if(isTestingData)
+                            tableData = getTableSheetTestingData(exceljson, tableName);
+                        else
+                            tableData = getTableSheetData(exceljson, tableName);
                         updateRecordInDynamoDb(tableData);
 
                         cnt++;
@@ -82,7 +85,7 @@ function loadExcelFile(fileName, tableName) {
         }
     }
     else {
-        alert("Please upload a valid Excel file!");
+        console.log("Please upload a valid Excel file!");
     }
 
     return tableData;
@@ -96,7 +99,7 @@ function getTableSheetData(jsondata, tableName) {/*Function used to convert the 
     for (var i = 0; i < jsondata.length; i++) {
         var rowData = [];
         var params;
-        var amplitude, time, frequency;
+        var amplitude, time, frequency, fault;
 
         for (var colIndex = 0; colIndex < columns.length; colIndex++) {
             var cellValue = jsondata[i][columns[colIndex]];
@@ -109,16 +112,18 @@ function getTableSheetData(jsondata, tableName) {/*Function used to convert the 
                 time = cellValue;
             else if (colIndex === 2)
                 frequency = cellValue;
-
+            else if (colIndex === 3)
+                fault = cellValue;
         }
         params = {
             TableName: tableName,
             Item: {
                 "Id": i + "",
+                "SortKey": i,
                 "Amplitude": amplitude,
                 "Time": time,
-                "Frequency": frequency
-
+                "Frequency": frequency,
+                "Fault":fault
             }
         }
         sheetData.push(params);
@@ -126,6 +131,48 @@ function getTableSheetData(jsondata, tableName) {/*Function used to convert the 
 
     return sheetData;
 }
+
+function getTableSheetTestingData(jsondata, tableName) {/*Function used to convert the JSON array to Html Table*/
+
+    var columns = getColumnHeaders(jsondata); /*Gets all the column headings of Excel*/
+    var sheetData = [];
+    for (var i = 0; i < jsondata.length; i++) {
+        var rowData = [];
+        var params;
+        var amplitude, time, frequency, fault;
+
+        for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+            var cellValue = jsondata[i][columns[colIndex]];
+            if (cellValue == null)
+                cellValue = "";
+
+            if (colIndex === 0)
+                amplitude = cellValue;
+            else if (colIndex === 1)
+                time = cellValue;
+            else if (colIndex === 2)
+                frequency = cellValue;
+           
+        }
+        params = {
+            TableName: tableName,
+            Item: {
+                "Id": i + "",
+                "SortKey": i,
+                "Amplitude": amplitude,
+                "Time": time,
+                "Frequency": frequency,
+            }
+        }
+        sheetData.push(params);
+    }
+
+    return sheetData;
+}
+
+
+
+
 function getColumnHeaders(jsondata) {/*Function used to get all column names from JSON and bind the html table header*/
     var columnSet = [];
     for (var i = 0; i < jsondata.length; i++) {
@@ -202,14 +249,13 @@ function getTestingDataFromDynamoDB() {
                 frequency.push(data.Items[index].Time);
             }
 
-            plotAmpFreqGraph(amplitude,time,frequency);
+            plotAmpFreqGraph(amplitude, time, frequency);
         }
 
     });
 }
 
-function plotAmpFreqGraph(amplitude,time,frequency)
-{
+function plotAmpFreqGraph(amplitude, time, frequency) {
     var ctx = document.getElementById("myChart").getContext('2d');
 
     var dataFirst = {
