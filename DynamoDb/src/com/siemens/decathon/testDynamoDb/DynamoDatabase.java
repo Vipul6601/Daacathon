@@ -28,121 +28,211 @@ import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.amazonaws.services.dynamodbv2.model.StreamSpecification;
 import com.amazonaws.services.dynamodbv2.model.StreamViewType;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.siemens.decathon.Constants.OpcUAClientConstants;;
+import com.siemens.decathon.Constants.OpcUAClientConstants;
+
+;
 
 public class DynamoDatabase {
 
 	AWSCredentials credentials;
 	AmazonDynamoDB client;
 	DynamoDB dynamoDB;
-	
+
 	public static void main(String[] args) {
 		new DynamoDatabase();
 	}
-	public DynamoDatabase()
-	{
-	 credentials = new BasicAWSCredentials(OpcUAClientConstants.ACCESS_KEY, OpcUAClientConstants.SECRET_KEY);
-	 client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)/*withEndpointConfiguration(
-					new AwsClientBuilder.EndpointConfiguration(OpcUAClientConstants.URL, Regions.AP_SOUTH_1.name()))*/
-			.withCredentials(new StaticCredentialsProvider(credentials)).build();
-	 dynamoDB = new DynamoDB(client);
-	 createTable();
-	 updateParameterizedTable();
-	 
+
+	public DynamoDatabase() {
+		credentials = new BasicAWSCredentials(OpcUAClientConstants.ACCESS_KEY,
+				OpcUAClientConstants.SECRET_KEY);
+		client = AmazonDynamoDBClientBuilder.standard()
+				.withRegion(Regions.AP_SOUTH_1)/*
+												 * withEndpointConfiguration(
+												 * new AwsClientBuilder.
+												 * EndpointConfiguration
+												 * (OpcUAClientConstants.URL,
+												 * Regions.AP_SOUTH_1.name()))
+												 */
+				.withCredentials(new StaticCredentialsProvider(credentials))
+				.build();
+		dynamoDB = new DynamoDB(client);
+		createTable();
+		updateParameterizedTable();
+
 	}
-	
-	public void createTable()
-	{
-	     
+
+	public void createTable() {
+
 		StreamSpecification streamSpecification = new StreamSpecification()
-			            .withStreamEnabled(true)
-			            .withStreamViewType(StreamViewType.NEW_IMAGE);
-			 
+				.withStreamEnabled(true).withStreamViewType(
+						StreamViewType.NEW_IMAGE);
+
 		List<AttributeDefinition> paramAttributeDefinitions = new ArrayList<>();
-		paramAttributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1)
+		paramAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(
+						OpcUAClientConstants.PARAMETERIZED_DATA_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
-     
+
 		List<AttributeDefinition> measuredAttributeDefinitions = new ArrayList<>();
-		measuredAttributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.MEASURED_DATA_COL_1)
+		measuredAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(OpcUAClientConstants.MEASURED_DATA_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
 
 		List<AttributeDefinition> testDataAttributeDefinitions = new ArrayList<>();
-		testDataAttributeDefinitions.add(new AttributeDefinition().withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
+		testDataAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
-		
-		CreateTableRequest createParamTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.PARAMETERIZED_DATA_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(paramAttributeDefinitions).withStreamSpecification(streamSpecification);
-		
-		
-		CreateTableRequest createMeasuredTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.MEASURED_DATA_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(measuredAttributeDefinitions).withStreamSpecification(streamSpecification);
-		
-		CreateTableRequest createTestTableRequest = new CreateTableRequest().withTableName(OpcUAClientConstants.TEST_DATA_TABLE)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.TEST_DATA_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
-		
-	CreateTableRequest createVibrationTrainingTableRequestImp1 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_ONE)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
-				 
-     CreateTableRequest createVibrationTrainingTableRequestImp2 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_TWO)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-				 .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
-	
-	 CreateTableRequest createVibrationTrainingTableRequestImp3 = new CreateTableRequest().withTableName(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_THREE)
-	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1, KeyType.HASH))
-	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
-	             .withAttributeDefinitions(testDataAttributeDefinitions).withStreamSpecification(streamSpecification);
-	
-		try {
-		//	CreateTableResult result = client.createTable(createTableRequest);
-			TableUtils.createTableIfNotExists(client,createParamTableRequest);
-			TableUtils.createTableIfNotExists(client,createMeasuredTableRequest);
-			TableUtils.createTableIfNotExists(client, createTestTableRequest);
-			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp1);
-			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp2);
-			TableUtils.createTableIfNotExists(client, createVibrationTrainingTableRequestImp3);
 
-			
+		CreateTableRequest createParamTableRequest = new CreateTableRequest()
+				.withTableName(OpcUAClientConstants.PARAMETERIZED_DATA_TABLE)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.PARAMETERIZED_DATA_COL_1,
+								KeyType.HASH))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(paramAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+
+		CreateTableRequest createMeasuredTableRequest = new CreateTableRequest()
+				.withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.MEASURED_DATA_COL_1,
+								KeyType.HASH))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(measuredAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+
+		CreateTableRequest createTestTableRequest = new CreateTableRequest()
+				.withTableName(OpcUAClientConstants.TEST_DATA_TABLE)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.TEST_DATA_COL_1,
+								KeyType.HASH))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(testDataAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+
+		List<AttributeDefinition> vibrationAttributeDefinitions = new ArrayList<>();
+		vibrationAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
+				.withAttributeType(ScalarAttributeType.S));
+		vibrationAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName("SortKey").withAttributeType(
+						ScalarAttributeType.N));
+
+		CreateTableRequest createVibrationTrainingTableRequestImp1 = new CreateTableRequest()
+				.withTableName(
+						OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_ONE)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1,
+								KeyType.HASH))
+				.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(vibrationAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+
+		CreateTableRequest createVibrationTrainingTableRequestImp2 = new CreateTableRequest()
+				.withTableName(
+						OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_TWO)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1,
+								KeyType.HASH))
+				.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(vibrationAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+
+		CreateTableRequest createVibrationTrainingTableRequestImp3 = new CreateTableRequest()
+				.withTableName(
+						OpcUAClientConstants.VIBRATION_TRAINING_TABLE_IMPELLAR_THREE)
+				.withKeySchema(
+						new KeySchemaElement(
+								OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1,
+								KeyType.HASH))
+				.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
+				.withProvisionedThroughput(
+						new ProvisionedThroughput(new Long(10), new Long(10)))
+				.withAttributeDefinitions(vibrationAttributeDefinitions)
+				.withStreamSpecification(streamSpecification);
+		
+		CreateTableRequest createVibrationTestingTrainingTableRequest = new CreateTableRequest()
+		.withTableName(
+				OpcUAClientConstants.VIBRATION_TESTING_TABLE)
+		.withKeySchema(
+				new KeySchemaElement(
+						OpcUAClientConstants.VIBRATION_TRAINING_TABLE_COL_1,
+						KeyType.HASH))
+		.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
+		.withProvisionedThroughput(
+				new ProvisionedThroughput(new Long(10), new Long(10)))
+		.withAttributeDefinitions(vibrationAttributeDefinitions)
+		.withStreamSpecification(streamSpecification);
+		try {
+			// CreateTableResult result =
+			// client.createTable(createTableRequest);
+			TableUtils.createTableIfNotExists(client, createParamTableRequest);
+			TableUtils.createTableIfNotExists(client,
+					createMeasuredTableRequest);
+			TableUtils.createTableIfNotExists(client, createTestTableRequest);
+			TableUtils.createTableIfNotExists(client,
+					createVibrationTrainingTableRequestImp1);
+			TableUtils.createTableIfNotExists(client,
+					createVibrationTrainingTableRequestImp2);
+			TableUtils.createTableIfNotExists(client,
+					createVibrationTrainingTableRequestImp3);
+			TableUtils.createTableIfNotExists(client,
+					createVibrationTestingTrainingTableRequest);
+
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());
 			System.exit(1);
 		}
 	}
 
-	public void updateTable(Map<String,AttributeValue> measuredMap) {
+	public void updateTable(Map<String, AttributeValue> measuredMap) {
 		Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
-	    String currentTimeStamp = sdf.format(cal.getTime());   
-	    measuredMap.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
-		PutItemRequest putDataMeasured = new PutItemRequest().withTableName(OpcUAClientConstants.MEASURED_DATA_TABLE)
-                .withItem(measuredMap);
-        PutItemResult putItemResult = client.putItem(putDataMeasured);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
+		String currentTimeStamp = sdf.format(cal.getTime());
+		measuredMap.put(OpcUAClientConstants.TIMESTAMP,
+				new AttributeValue().withS(currentTimeStamp));
+		PutItemRequest putDataMeasured = new PutItemRequest().withTableName(
+				OpcUAClientConstants.MEASURED_DATA_TABLE).withItem(measuredMap);
+		PutItemResult putItemResult = client.putItem(putDataMeasured);
 	}
-	public void updateParameterizedTable(){
-		 
+
+	public void updateParameterizedTable() {
+
 		Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
-	    String currentTimeStamp = sdf.format(cal.getTime());
-	        
-	   	Map<String,AttributeValue> parameterizedAttributeValues = new HashMap<>();
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_1,new AttributeValue().withS("1"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_2,new AttributeValue().withS("0"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_3,new AttributeValue().withS("40.55"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_4,new AttributeValue().withS("2.06"));
-	   	//parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new AttributeValue().withS("60"));
-	   	//parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new AttributeValue().withS("70"));
-	   	parameterizedAttributeValues.put(OpcUAClientConstants.TIMESTAMP,new AttributeValue().withS(currentTimeStamp));
-	        
-	    PutItemRequest putDataParam = new PutItemRequest().withTableName(OpcUAClientConstants.TEST_DATA_TABLE)
-	              .withItem(parameterizedAttributeValues);
-	    PutItemResult putItemResult1 = client.putItem(putDataParam);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SS");
+		String currentTimeStamp = sdf.format(cal.getTime());
+
+		Map<String, AttributeValue> parameterizedAttributeValues = new HashMap<>();
+		parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_1,
+				new AttributeValue().withS("1"));
+		parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_2,
+				new AttributeValue().withS("0"));
+		parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_3,
+				new AttributeValue().withS("40.55"));
+		parameterizedAttributeValues.put(OpcUAClientConstants.TEST_DATA_COL_4,
+				new AttributeValue().withS("2.06"));
+		// parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_6,new
+		// AttributeValue().withS("60"));
+		// parameterizedAttributeValues.put(OpcUAClientConstants.PARAMETERIZED_DATA_COL_7,new
+		// AttributeValue().withS("70"));
+		parameterizedAttributeValues.put(OpcUAClientConstants.TIMESTAMP,
+				new AttributeValue().withS(currentTimeStamp));
+
+		PutItemRequest putDataParam = new PutItemRequest().withTableName(
+				OpcUAClientConstants.TEST_DATA_TABLE).withItem(
+				parameterizedAttributeValues);
+		PutItemResult putItemResult1 = client.putItem(putDataParam);
 	}
 }
