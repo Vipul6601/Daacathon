@@ -63,24 +63,53 @@
                             </h2>
                         </div>
                         <div class="panel-body">
-                            <div class="well well-sm statusHeading">
-                                Motor Status :: {{motorStatus}}
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Alarms</h3>
+                                </div>
+                                <div class=" statusHeading">
+                                    Motor Status :: {{motorStatus}}
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Alarm</th>
+                                                <th>Type</th>
+                                                <th>Status</th>
+                                                <th>TimeStamp</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="alarm in alarms track by $index">
+                                                <td>
+                                                    <button type="submit" class="alarmButton">{{alarm.Name}}</button>
+                                                </td>
+                                                <td>{{alarm.Type}}</td>
+                                                <td>{{alarm.Status}}</td>
+                                                <td>{{alarm.TimeStamp}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="subHeading">
-                                Measured Values
-                            </div>
 
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th ng-repeat="header in headers">{{header}}</th>
-                                    </tr>
-
-                                    <tr ng-repeat="rowData in tableData track by $index">
-                                        <td ng-repeat="cellData in rowData track by $index">{{cellData}}</td>
-                                    </tr>
-                                </table>
-
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Measured Values</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                            <thead>
+                                        <tr>
+                                            <th ng-repeat="header in headers">{{header}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tr ng-repeat="rowData in tableData track by $index">
+                                            <td ng-repeat="cellData in rowData track by $index">{{cellData}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

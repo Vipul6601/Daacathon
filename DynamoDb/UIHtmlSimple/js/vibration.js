@@ -170,9 +170,6 @@ function getTableSheetTestingData(jsondata, tableName) {/*Function used to conve
     return sheetData;
 }
 
-
-
-
 function getColumnHeaders(jsondata) {/*Function used to get all column names from JSON and bind the html table header*/
     var columnSet = [];
     for (var i = 0; i < jsondata.length; i++) {
@@ -229,7 +226,7 @@ function getTestingDataFromDynamoDB() {
     AWS.config.update(awsConfig);
     var docClient = new AWS.DynamoDB.DocumentClient();
     var params = {
-        TableName: "VibrationTrainingImpellar1"
+        TableName: "VibrationTesting"
     };
 
     docClient.scan(params, function (err, data) {
@@ -243,10 +240,13 @@ function getTestingDataFromDynamoDB() {
             var time = [];
             var frequency = [];
 
+            data.Items.sort(function(a, b) {
+                return parseFloat(a.SortKey) - parseFloat(b.SortKey);
+            });
             for (var index = 0; index < data.Items.length; index++) {
                 amplitude.push(data.Items[index].Amplitude);
-                time.push(data.Items[index].Frequency);
-                frequency.push(data.Items[index].Time);
+                time.push(data.Items[index].Time);
+                frequency.push(data.Items[index].Frequency);
             }
 
             plotAmpFreqGraph(amplitude, time, frequency);
@@ -259,8 +259,8 @@ function plotAmpFreqGraph(amplitude, time, frequency) {
     var ctx = document.getElementById("myChart").getContext('2d');
 
     var dataFirst = {
-        label: "Amplitude",
-        data: amplitude,
+        label: "Frequency",
+        data: frequency,
         lineTension: 0.3,
         fill: false,
         borderColor: 'red',
@@ -275,8 +275,8 @@ function plotAmpFreqGraph(amplitude, time, frequency) {
     };
 
     var dataSecond = {
-        label: "Frequency",
-        data: frequency,
+        label: "Amplitude",
+        data: amplitude,
         lineTension: 0.3,
         fill: false,
         borderColor: 'purple',

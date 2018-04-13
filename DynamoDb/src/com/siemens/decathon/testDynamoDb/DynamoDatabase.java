@@ -175,6 +175,24 @@ public class DynamoDatabase {
 				new ProvisionedThroughput(new Long(10), new Long(10)))
 		.withAttributeDefinitions(vibrationAttributeDefinitions)
 		.withStreamSpecification(streamSpecification);
+		
+		List<AttributeDefinition> alarmAttributeDefinitions = new ArrayList<>();
+		alarmAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
+				.withAttributeType(ScalarAttributeType.S));
+		
+		CreateTableRequest createAlarmTableRequest = new CreateTableRequest()
+		.withTableName(
+				OpcUAClientConstants.ALARM_TABLE)
+		.withKeySchema(
+				new KeySchemaElement(
+						OpcUAClientConstants.TEST_DATA_COL_1,
+						KeyType.HASH))
+		.withProvisionedThroughput(
+				new ProvisionedThroughput(new Long(10), new Long(10)))
+		.withAttributeDefinitions(alarmAttributeDefinitions)
+		.withStreamSpecification(streamSpecification);
+		
 		try {
 			// CreateTableResult result =
 			// client.createTable(createTableRequest);
@@ -190,6 +208,8 @@ public class DynamoDatabase {
 					createVibrationTrainingTableRequestImp3);
 			TableUtils.createTableIfNotExists(client,
 					createVibrationTestingTrainingTableRequest);
+			TableUtils.createTableIfNotExists(client,
+					createAlarmTableRequest);
 
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());

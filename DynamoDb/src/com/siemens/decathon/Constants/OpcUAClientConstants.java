@@ -45,6 +45,8 @@ public class OpcUAClientConstants {
 	public static final String VIBRATION_TRAINING_TABLE_IMPELLAR_THREE ="VibrationTrainingImpellar3";
 
 	public static final String VIBRATION_TESTING_TABLE = "VibrationTesting";
+	
+	public static final String ALARM_TABLE = "AlarmTable";
 		
 	public static final String ACCESS_KEY = "AKIAICOZGTNXCIHPQWGQ";
 	public static final String SECRET_KEY = "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";
