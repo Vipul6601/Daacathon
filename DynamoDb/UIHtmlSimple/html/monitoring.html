@@ -68,7 +68,15 @@
                                     <h3 class="panel-title">Alarms</h3>
                                 </div>
                                 <div class=" statusHeading">
-                                    Motor Status :: {{motorStatus}}
+                                    Motor Status ::
+                                    <div style="display: inline-block;" ng-if='motorStatus == "Normal"'>
+                    
+                                            <img src="..\images\working.jpg" alt="Smiley face" height="32" width="32">
+                                         </div>
+                                         <div style="display: inline-block;" ng-if='motorStatus != "Normal"'>
+                                                <img src="..\images\error.jpg" alt="Smiley face" height="32" width="32">
+                                         </div>
+                                         {{motorStatus}}
                                 </div>
                                 <div class="panel-body">
                                     <table class="table table-condensed">
