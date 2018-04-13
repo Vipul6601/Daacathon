@@ -1,4 +1,20 @@
-
+#wrapper {
+    width: auto;
+    overflow: hidden;
+    margin: 1%; /* will contain if #first is longer than #second */
+}
+#first {
+    width: 48%;
+    float:left; /* add this */
+    border: 1px solid red;
+    margin-right:2%;
+}
+#second {
+	 width: 48%;
+	 margin-left:2%;
+    border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
 .axis path,
 .axis line {
   fill: none;

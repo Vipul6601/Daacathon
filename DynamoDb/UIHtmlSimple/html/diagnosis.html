@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,9 +21,10 @@
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
 <script src="../js/awscredentials.js"></script>
 <script src="../js/diagnosis.js"></script>
+<script src="../js/Chart.js"></script>
 </head>
 
-<body>
+<body onload="plotAmpFreqGraph()">
 
     <div id="wrapper" class="toggled">
 
@@ -58,13 +59,29 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <label class="main-heading">Diagnosis</label>
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="subHeading"> Flow Vs Effeciency</div>
-                        <div id="graph"></div>                      
+                    
+                    <!-- div id = "wrapper">
+		                  <div class="panel-body" id = "first">
+		                      <div class="subHeading"> Flow Vs Effeciency</div>
+		                      <div id="graph"></div>                      
+		                  </div>
+		                  <div class="panel-body" id = "second">
+		                      <div class="subHeading"> Flow Vs Effeciency</div>
+		                      <div id="graph"></div>                      
+		                  </div>
+                    </div-->
+                    <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Diagnosis Platform</h3>
+                                </div>
+                                <div id = "wrapper">
+                                <div class="panel-body" id = "first">
+                                    <canvas id="myChart1" width="" height=""></canvas>
+                                </div>
+                                <div class="panel-body" id = "second">
+                                    <canvas id="myChart2" width="" height=""></canvas>
+                                </div>
+                                </div>
                     </div>
                 </div>
 
@@ -74,4 +91,4 @@
     </div>
 </body>
 
-</html> -->
+</html> 

@@ -17,7 +17,9 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
     var tableData = [];
 
     var params = {
-        TableName: "MeasuredData"
+        TableName: "MeasuredData",
+        Limit: 10,
+        ScanIndexForward: true
     };
 
     docClient.scan(params, function (err, data) {
@@ -60,9 +62,14 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
         }
 
         $interval(function(){
-            var params = {
-                TableName: "AlarmTable"
-            };
+        	var params = {
+                TableName: "AlarmTable",
+                FilterExpression: "#status = :status",
+                ExpressionAttributeNames:{"#status": "Status"},
+                ExpressionAttributeValues: {
+                    ":status": "Active",
+                }
+           };
         
             docClient.scan(params, function (err, data) {
                 if (err) {
@@ -86,7 +93,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
                     $scope.$apply();
                 }
             });
-        }, 5000);
+        }, 1000);
     });
 
 
