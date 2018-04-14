@@ -20,34 +20,34 @@
 
 			<!-- Sidebar -->
 			<div id="sidebar-wrapper">
-					<ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
-						<li class="sidebar-brand" >
-							<a href="../index.html">
-								Pump Monitor
-							</a>
-						</li>
-						<li class="nav-items">
-								<a href="diagnosis.html">Diagnosis</a>
-						</li>
-						<li class="nav-items">
-								<a href="monitoring.html">
-									Monitoring</a>
-						</li>
-						<li class="nav-items">
-							<a href="vibration.html">Vibration</a>
-						</li>
-						<li class="nav-items">
-							<a href="configuration.html">Configuration</a>
-						</li>
-						<li class="nav-items">
-							<a href="testData.html">Model Trainer</a>
-						</li>
-						<li class="nav-items">
-							<a href="reports.html">Reports</a>
-						</li>
-					</ul>
-				</div>
-				<!-- /#sidebar-wrapper -->
+				<ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
+					<li class="sidebar-brand">
+						<a href="../index.html">
+							Pump Monitor
+						</a>
+					</li>
+					<li class="nav-items">
+						<a href="diagnosis.html">Diagnosis</a>
+					</li>
+					<li class="nav-items">
+						<a href="monitoring.html">
+							Monitoring</a>
+					</li>
+					<li class="nav-items">
+						<a href="vibration.html">Vibration</a>
+					</li>
+					<li class="nav-items">
+						<a href="configuration.html">Configuration</a>
+					</li>
+					<li class="nav-items">
+						<a href="testData.html">Model Trainer</a>
+					</li>
+					<li class="nav-items">
+						<a href="reports.html">Reports</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /#sidebar-wrapper -->
 
 			<!-- Page Content -->
 			<div id="page-content-wrapper">
@@ -57,54 +57,62 @@
 							<label class="main-heading">Configuration</label>
 						</div>
 						<div class="panel-body">
-							<h2>
-								<label class="control-label"> Configuration Data</label>
-							</h2>
-							<form class="form-horizontal">
-								<div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Rated Power</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" class="form-control " name="rpower" ng-model="rpower" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Rated Efficiency</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" name="rateeff" ng-model="rateeff" class="form-control" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Minimum Flow</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" name="minflow" ng-model="minflow" class="form-control" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Threshold</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" name="threshold" ng-model="threshold" class="form-control" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Rated Flow</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" name="rflow" ng-model="rflow" class="form-control" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-xs-4">Rated Speed</label>
-										<div class="col-xs-6 formPadding">
-											<input type="text" name="rspeed" ng-model="rspeed" class="form-control" />
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-xs-offset-9 col-xs-1">
-											<button class="btn btn-primary btn-lg" ng-click="updateConfigData()">Update</button>
-										</div>
-									</div>
 
-							</form>
+							<div class="panel panel-warning">
+								<div class="panel-heading">
+									<h3 class="panel-title"> Configuration Data</h3>
+								</div>
+								<div class="panel-body">
+									<form class="form-horizontal">
+										<div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Rated Power</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" class="form-control " name="rpower" ng-model="rpower" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Rated Efficiency</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" name="rateeff" ng-model="rateeff" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Minimum Flow</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" name="minflow" ng-model="minflow" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Threshold</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" name="threshold" ng-model="threshold" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Rated Flow</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" name="rflow" ng-model="rflow" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-xs-4">Rated Speed</label>
+												<div class="col-xs-6 formPadding">
+													<input type="text" name="rspeed" ng-model="rspeed" class="form-control" />
+												</div>
+											</div>
+											<div class="form-group">
+												<div class="col-xs-offset-9 col-xs-1">
+													<button class="btn btn-primary btn-lg" ng-click="updateConfigData()">Update</button>
+												</div>
+											</div>
+
+									</form>
+
+									</div>
+								</div>
+
+
 
 							</div>
 						</div>
