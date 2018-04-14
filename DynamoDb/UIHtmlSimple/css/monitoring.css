@@ -41,8 +41,8 @@
   }
 
   @-webkit-keyframes glowing {
-    0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
-    50% { background-color: #FF0000; -webkit-box-shadow: 0 0 5px #FF0000; }
-    100% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #B20000; }
+    0% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #920000; }
+    50% { background-color: #FF0000; -webkit-box-shadow: 0 0 7px #FF0000; }
+    100% { background-color: #B20000; -webkit-box-shadow: 0 0 3px #920000; }
   }
   

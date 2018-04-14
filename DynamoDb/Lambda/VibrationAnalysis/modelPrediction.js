@@ -28,9 +28,9 @@ var modelPrediction = {
                 trainingFeatureSet.push(parseFloat(trainingSet.DefectFrequency7.Amplitude));
 
                 if (trainingSet.Fault == "TRUE")
-                    trainingFeatureSet.push(0)
+                    trainingFeatureSet.push(1)
                 else
-                    trainingFeatureSet.push(1);
+                    trainingFeatureSet.push(0);
 
                 console.log(trainingFeatureSet);
                 trainingFeatureSets.push(trainingFeatureSet);
