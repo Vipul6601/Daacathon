@@ -1,7 +1,7 @@
 var AWS = require("aws-sdk");
 var trainingDataReader = {
 
-    getTrainingDataImpellar: function (testingFilteredSet,predictionCallBack,impellarWearCombination) {
+    getTrainingDataImpellar: function (predictionRequestId,testingFilteredSet,predictionCallBack,impellarWearCombination) {
 
         var table = "";
         if(impellarWearCombination == 1)
@@ -48,10 +48,10 @@ var trainingDataReader = {
                 } 
             }
             console.log("calling predictionCallBack impellarWearCombination::"+impellarWearCombination + "testingFilteredSet" + testingFilteredSet)
-            predictionCallBack(tableData,testingFilteredSet,impellarWearCombination);
+            predictionCallBack(predictionRequestId,tableData,testingFilteredSet,impellarWearCombination);
         });
     },
-    getTestingData: function (testingCallBack) {
+    getTestingData: function (predictionRequestId,testingCallBack) {
 
         var table = "VibrationTesting";
 
@@ -92,7 +92,7 @@ var trainingDataReader = {
                 }
             }
             console.log(tableData.length);
-            testingCallBack(tableData);
+            testingCallBack(predictionRequestId,tableData);
         });
     }
 

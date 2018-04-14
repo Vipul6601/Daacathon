@@ -230,7 +230,6 @@ app.controller('vibrationController', function ($scope,$interval) {
             "Id": currentTime + "",
             "PredictionRequestId": currentTime,
             "TimeStamp": timestamp,
-            "PredictionStatus": "Requested",
         }
 
         var params = {
