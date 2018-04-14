@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,17 +11,17 @@
     <title>Pump Monitoring System</title>
 
     <!-- Bootstrap core CSS -->
-<link href="../css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!-- Custom styles for this template -->
-<link href="../css/simple-sidebar.css" rel="stylesheet">
-<link href="../css/diagnosis.css" rel="stylesheet">
+    <link href="../css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+    <link href="../css/diagnosis.css" rel="stylesheet">
 
-<script src="http://d3js.org/d3.v3.js"></script>
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
-<script src="../js/awscredentials.js"></script>
-<script src="../js/diagnosis.js"></script>
-<script src="../js/Chart.js"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="../js/awscredentials.js"></script>
+    <script src="../js/diagnosis.js"></script>
+    <script src="../js/Chart.js"></script>
 </head>
 
 <body onload="plotAmpFreqGraph()">
@@ -30,34 +30,34 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-                <ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
-                        <li class="sidebar-brand" >
-                                <a href="index.html">
-                                    Pump Monitor
-                                </a>
-                            </li>
-                    <li class="nav-items">
-                            <a href="diagnosis.html">Diagnosis</a>
-                    </li>
-                    <li class="nav-items">
-                            <a href="monitoring.html">
-                                Monitoring</a>
-                    </li>
-                    <li class="nav-items">
-                        <a href="vibration.html">Vibration</a>
-                    </li>
-                    <li class="nav-items">
-                        <a href="configuration.html">Configuration</a>
-                    </li>
-                    <li class="nav-items">
-                        <a href="testData.html">Test Data</a>
-                    </li>
-                    <li class="nav-items">
-                        <a href="reports.html">Reports</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /#sidebar-wrapper -->
+            <ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
+                <li class="sidebar-brand">
+                    <a href="../index.html">
+                        Pump Monitor
+                    </a>
+                </li>
+                <li class="nav-items">
+                    <a href="diagnosis.html">Diagnosis</a>
+                </li>
+                <li class="nav-items">
+                    <a href="monitoring.html">
+                        Monitoring</a>
+                </li>
+                <li class="nav-items">
+                    <a href="vibration.html">Vibration</a>
+                </li>
+                <li class="nav-items">
+                    <a href="configuration.html">Configuration</a>
+                </li>
+                <li class="nav-items">
+                    <a href="testData.html">Test Data</a>
+                </li>
+                <li class="nav-items">
+                    <a href="reports.html">Reports</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
@@ -69,23 +69,23 @@
                     </div>
                     <div class="panel-body">
                         <div class="panel panel-success">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">KPI based Predictive Maintenance</h3>
-                                </div>
-                                <div id = "wrapper1">
-                                <div class="panel-body" id = "first">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">KPI based Predictive Maintenance</h3>
+                            </div>
+                            <div id="wrapper1">
+                                <div class="panel-body" id="first">
                                     <canvas id="myChart1" width="100%" height="100%"></canvas>
                                 </div>
-                                <div class="panel-body" id = "second">
+                                <div class="panel-body" id="second">
                                     <canvas id="myChart2" width="100%" height="100%"></canvas>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- /#page-content-wrapper -->
         </div>
-        <!-- /#page-content-wrapper -->
-    </div>
 </body>
 
-</html> 
+</html>

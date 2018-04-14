@@ -1,118 +1,118 @@
 <html>
+
 <head>
-    
-<meta name="viewport" content="width=device-width">
+
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link href="../css/testData.css" rel="stylesheet">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="../css/testData.css" rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
-<script src="../js/awscredentials.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="../js/awscredentials.js"></script>
 
 
-<script type="text/javascript">
-$(function () {
-    $("#upload").bind("click", function () {
-        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-        if (regex.test($("#fileUpload").val().toLowerCase())) {
-            if (typeof (FileReader) != "undefined") {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var table = $("<table class='responsive-table' id='testData'/>");
-                    //table.setAttribute('class', 'responsive-table');
-                    //table.addClass = "pure-table";
-                    var rows = e.target.result.split("\n");
-                    for (var i = 0; i < rows.length; i++) {
-                        
-                        var row = $("<tr />");
-                        var cells = rows[i].split(",");
-                        for (var j = 0; j < cells.length; j++) {
-                            var cell;
-                            if(i ==0){
-                                cell =$("<th />");
+    <script type="text/javascript">
+        $(function () {
+            $("#upload").bind("click", function () {
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+                if (regex.test($("#fileUpload").val().toLowerCase())) {
+                    if (typeof (FileReader) != "undefined") {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var table = $("<table class='responsive-table' id='testData'/>");
+                            //table.setAttribute('class', 'responsive-table');
+                            //table.addClass = "pure-table";
+                            var rows = e.target.result.split("\n");
+                            for (var i = 0; i < rows.length; i++) {
+
+                                var row = $("<tr />");
+                                var cells = rows[i].split(",");
+                                for (var j = 0; j < cells.length; j++) {
+                                    var cell;
+                                    if (i == 0) {
+                                        cell = $("<th />");
+                                    }
+                                    else {
+                                        cell = $("<td />");
+                                    }
+                                    if (i == 0) {
+                                        cell.html(cells[j]);
+                                    }
+                                    else {
+                                        var input = document.createElement("input");
+                                        input.type = "text";
+                                        input.name = "member" + i;
+                                        input.value = cells[j];
+                                        cell.append(input);
+                                    }
+                                    row.append(cell);
+                                }
+                                var rowHead;
+                                if (i == 0) {
+                                    rowHead = $("<thead />");
+                                }
+                                else {
+                                    rowHead = $("<tbody />");
+                                }
+                                rowHead.append(row);
+                                table.append(rowHead);
                             }
-                            else{
-                                cell = $("<td />");
-                            }
-                            if(i ==0)
-							{
-								cell.html(cells[j]);
-							}
-                            else
-							{
-								var input = document.createElement("input");
-								input.type = "text";
-								input.name = "member" + i;
-								input.value = cells[j];
-								cell.append(input);
-							}
-							row.append(cell);
+                            $("#dvCSV").html('');
+                            $("#dvCSV").append(table);
                         }
-                        var rowHead;
-                        if(i == 0){
-                            rowHead = $("<thead />");
-                        }
-                        else{
-                            rowHead = $("<tbody />");
-                        }
-                        rowHead.append(row);
-                        table.append(rowHead);
+                        reader.readAsText($("#fileUpload")[0].files[0]);
+                    } else {
+                        alert("This browser does not support HTML5.");
                     }
-                    $("#dvCSV").html('');
-                    $("#dvCSV").append(table);
+                } else {
+                    alert("Please upload a valid CSV file.");
                 }
-                reader.readAsText($("#fileUpload")[0].files[0]);
-            } else {
-                alert("This browser does not support HTML5.");
-            }
-        } else {
-            alert("Please upload a valid CSV file.");
-        }
-    });
-});
-</script>
-<script src="../js/testData.js"></script>
-<script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
-<link href="../css/simple-sidebar.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="../css/vibration.css" rel="stylesheet">
-</head>    
+            });
+        });
+    </script>
+    <script src="../js/testData.js"></script>
+    <script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
+    <link href="../css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../css/vibration.css" rel="stylesheet">
+</head>
+
 <body ng-app="testDataApp">
-        <div ng-controller="testController">
- <!-- Sidebar -->
- <div id="wrapper" class="toggled">
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
-            <li class="sidebar-brand">
-                <a href="index.html">
-                    Pump Monitor
-                </a>
-            </li>
-            <li class="nav-items">
-                    <a href="diagnosis.html">Diagnosis</a>
-            </li>
-            <li class="nav-items">
-                    <a href="monitoring.html">
-                        Monitoring</a>
-            </li>
-            <li class="nav-items">
-                <a href="vibration.html">Vibration</a>
-            </li>
-            <li class="nav-items">
-                <a href="configuration.html">Configuration</a>
-            </li>
-            <li class="nav-items">
-                <a href="testData.html">Test Data</a>
-            </li>
-            <li class="nav-items">
-                <a href="reports.html">Reports</a>
-            </li>
-        </ul>
-    </div>
-    <!-- /#sidebar-wrapper -->
-    <!-- Page Content -->
-        <div id="page-content-wrapper">
+    <div ng-controller="testController">
+        <!-- Sidebar -->
+        <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
+                    <li class="sidebar-brand">
+                        <a href="../index.html">
+                            Pump Monitor
+                        </a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="diagnosis.html">Diagnosis</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="monitoring.html">
+                            Monitoring</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="vibration.html">Vibration</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="configuration.html">Configuration</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="testData.html">Test Data</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="reports.html">Reports</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
                 <div class="container-fluid">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -120,7 +120,7 @@ $(function () {
                             </h2>
                         </div>
                         <div class="panel-body">
-                            
+
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Test Data of KPI</h3>
@@ -138,12 +138,12 @@ $(function () {
                                             </div>
                                         </div>
                                         <div style="padding-top: 25px;" class="row">
-                                            <div class="testButton">    
+                                            <div class="testButton">
                                                 <button type="button" id="upload" class="btn btn-info btn-block">Upload Data</button>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="panel panel-success">
@@ -151,13 +151,13 @@ $(function () {
                                     <h3 class="panel-title">Visualization Platform</h3>
                                 </div>
                                 <div class="panel-body">
-                                        <div id="dvCSV"></div>
+                                    <div id="dvCSV"></div>
                                 </div>
                                 <div style="padding-top: 5px;" class="row">
-                                        <div class="importButton">
-                                            <button type="button" ng-click="updateConfigData() " class="btn btn-warning btn-block">Train Model</button>
-                                            </div>
+                                    <div class="importButton">
+                                        <button type="button" ng-click="updateConfigData() " class="btn btn-warning btn-block">Train Model</button>
                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -166,9 +166,10 @@ $(function () {
 
             </div>
         </div>
-    
+
         <!-- /#page-content-wrapper -->
 </body>
+
 </html>
 <!--
                         <div class="equalBlocks">

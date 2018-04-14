@@ -31,24 +31,28 @@
             <div id="sidebar-wrapper">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand">
-                        <a href="index.html">
+                        <a href="../index.html">
                             Pump Monitor
                         </a>
                     </li>
                     <li class="nav-items">
-                        <a href="diagnosis.html">Daignosis</a>
+                        <a href="diagnosis.html">Diagnosis</a>
                     </li>
                     <li class="nav-items">
-                        <a href="monitoring.html">Monitoring</a>
+                        <a href="monitoring.html">
+                            Monitoring</a>
                     </li>
                     <li class="nav-items">
-                        <a href="#">Vibration</a>
+                        <a href="vibration.html">Vibration</a>
                     </li>
                     <li class="nav-items">
                         <a href="configuration.html">Configuration</a>
                     </li>
                     <li class="nav-items">
-                        <a href="#">Test Data</a>
+                        <a href="testData.html">Test Data</a>
+                    </li>
+                    <li class="nav-items">
+                        <a href="reports.html">Reports</a>
                     </li>
                 </ul>
             </div>
@@ -70,13 +74,13 @@
                                 <div class=" statusHeading">
                                     Motor Status ::
                                     <div style="display: inline-block;" ng-if='motorStatus == "Normal"'>
-                    
-                                            <img src="..\images\working.jpg" alt="Smiley face" height="32" width="32">
-                                         </div>
-                                         <div style="display: inline-block;" ng-if='motorStatus != "Normal"'>
-                                                <img src="..\images\error.jpg" alt="Smiley face" height="32" width="32">
-                                         </div>
-                                         {{motorStatus}}
+
+                                        <img src="..\images\working.jpg" alt="Smiley face" height="32" width="32">
+                                    </div>
+                                    <div style="display: inline-block;" ng-if='motorStatus != "Normal"'>
+                                        <img src="..\images\error.jpg" alt="Smiley face" height="32" width="32">
+                                    </div>
+                                    {{motorStatus}}
                                 </div>
                                 <div class="panel-body">
                                     <table class="table table-condensed">
@@ -108,10 +112,10 @@
                                 </div>
                                 <div class="panel-body">
                                     <table class="table table-condensed">
-                                            <thead>
-                                        <tr>
-                                            <th ng-repeat="header in headers">{{header}}</th>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="header in headers">{{header}}</th>
+                                            </tr>
                                         </thead>
                                         <tr ng-repeat="rowData in tableData track by $index">
                                             <td ng-repeat="cellData in rowData track by $index">{{cellData}}</td>
