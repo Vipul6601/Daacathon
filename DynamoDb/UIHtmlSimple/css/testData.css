@@ -214,3 +214,37 @@ a:hover, a:focus {
 }
 
 
+.row
+{
+display: flex;
+width:100%;
+padding-top: 5px;
+
+}
+
+.testButton{
+  width: 66.66%;
+  padding: 0 10px 0px 10px;
+}
+
+.importCell{
+  width: 50%;
+  float: left;
+  margin: 0 auto;
+  padding: 0 10px 10px 10px;
+}
+
+.testCell{
+  width: 66.66%;
+  float: left;
+  
+  padding: 0 10px 10px 10px;
+} 
+
+.importButton{
+  width: 50%;
+  margin: 0 auto;
+}
+.subHeading{
+  font-weight: bold;
+}

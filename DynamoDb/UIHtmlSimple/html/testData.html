@@ -10,67 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
     <script src="../js/awscredentials.js"></script>
-
-
-    <script type="text/javascript">
-        $(function () {
-            $("#upload").bind("click", function () {
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-                if (regex.test($("#fileUpload").val().toLowerCase())) {
-                    if (typeof (FileReader) != "undefined") {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            var table = $("<table class='responsive-table' id='testData'/>");
-                            //table.setAttribute('class', 'responsive-table');
-                            //table.addClass = "pure-table";
-                            var rows = e.target.result.split("\n");
-                            for (var i = 0; i < rows.length; i++) {
-
-                                var row = $("<tr />");
-                                var cells = rows[i].split(",");
-                                for (var j = 0; j < cells.length; j++) {
-                                    var cell;
-                                    if (i == 0) {
-                                        cell = $("<th />");
-                                    }
-                                    else {
-                                        cell = $("<td />");
-                                    }
-                                    if (i == 0) {
-                                        cell.html(cells[j]);
-                                    }
-                                    else {
-                                        var input = document.createElement("input");
-                                        input.type = "text";
-                                        input.name = "member" + i;
-                                        input.value = cells[j];
-                                        cell.append(input);
-                                    }
-                                    row.append(cell);
-                                }
-                                var rowHead;
-                                if (i == 0) {
-                                    rowHead = $("<thead />");
-                                }
-                                else {
-                                    rowHead = $("<tbody />");
-                                }
-                                rowHead.append(row);
-                                table.append(rowHead);
-                            }
-                            $("#dvCSV").html('');
-                            $("#dvCSV").append(table);
-                        }
-                        reader.readAsText($("#fileUpload")[0].files[0]);
-                    } else {
-                        alert("This browser does not support HTML5.");
-                    }
-                } else {
-                    alert("Please upload a valid CSV file.");
-                }
-            });
-        });
-    </script>
     <script src="../js/testData.js"></script>
     <script src="https://unpkg.com/sweetalert2@7.17.0/dist/sweetalert2.all.js"></script>
     <link href="../css/simple-sidebar.css" rel="stylesheet">
@@ -103,7 +42,7 @@
                         <a href="configuration.html">Configuration</a>
                     </li>
                     <li class="nav-items">
-                        <a href="testData.html">Test Data</a>
+                        <a href="testData.html">Model Trainer</a>
                     </li>
                     <li class="nav-items">
                         <a href="reports.html">Reports</a>
@@ -116,45 +55,43 @@
                 <div class="container-fluid">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <label class="main-heading">Configuration: Predictive Maintenance based on KPI</label>
+                            <label class="main-heading">Model Trainer</label>
                             </h2>
                         </div>
                         <div class="panel-body">
 
-                            <div class="panel panel-info">
+                            <div class="panel panel-warning">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Test Data of KPI</h3>
+                                    <h3 class="panel-title subHeading">Test Data of KPI</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="equalBlocks">
                                         <div class="row">
-                                            <div class="testCell">
-                                                <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Real Test Data</button>
+                                            <div class="importCell">
+                                                <button type="button" class="btn btn-default btn-lg disabled" disabled="disabled">Training dataset for KPI</button>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="testCell">
+                                            <div class="importCell">
                                                 <input type="file" id="fileUpload" class="" />
                                             </div>
                                         </div>
                                         <div style="padding-top: 25px;" class="row">
-                                            <div class="testButton">
-                                                <button type="button" id="upload" class="btn btn-info btn-block">Upload Data</button>
+                                            <div class="importButton">
+                                                <button type="button" id="upload" ng-click="uploadData()" class="btn btn-info btn-block">Upload Data</button>
                                             </div>
                                         </div>
                                     </div>
 
-                                </div>
                             </div>
-                            <div class="panel panel-success">
+                            <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Visualization Platform</h3>
+                                    <h3 class="panel-title subHeading">KPI Taining DataSet</h3>
                                 </div>
                                 <div class="panel-body">
                                     <div id="dvCSV"></div>
                                 </div>
-                                <div style="padding-top: 5px;" class="row">
-                                    <div class="importButton">
+                                <div style="padding: 15px 0;" class="row">
+                                    <div ng-if="fileUploaded" class="importButton">
                                         <button type="button" ng-click="updateConfigData() " class="btn btn-warning btn-block">Train Model</button>
                                     </div>
                                 </div>

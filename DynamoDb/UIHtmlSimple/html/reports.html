@@ -52,7 +52,7 @@
                         <a href="configuration.html">Configuration</a>
                     </li>
                     <li class="nav-items">
-                        <a href="testData.html">Test Data</a>
+                        <a href="testData.html">Model Trainer</a>
                     </li>
                     <li class="nav-items">
                         <a href="reports.html">Reports</a>
@@ -70,24 +70,47 @@
                             </h2>
                         </div>
                         <div class="panel-body">
-                            <div class="panel panel-danger">
+                            <div class="panel panel-warning">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Reports</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <table class="table table-condensed">
                                         <form>
-                                            Start Date
-                                            <input type="date" name="startDate" ng-model="startDate" required> End Date
-                                            <input type="date" name="endDate" ng-model="endDate" required>
-                                            <br>
-                                            <input type="radio" name="report" ng-model="report" value="kpi" required> KPI
-                                            <br>
-                                            <input type="radio" name="report" ng-model="report" value="alarm" required> Alarm
-                                            <br>
-                                            <button type="submit" ng-click="generateReport()">Generate Report</button>
+                                            <div class="row">
+                                                <label class="leftcolumn">Start Date</label>
+                                                <div class="rightcolumn">
+                                                    <input type="date" name="startDate" class="form-control" ng-model="startDate"
+                                                        required>
+                                                </div>
+                                                <div class="col-xs-3"></div>
+                                            </div>
+                                            <div class="row">
+                                                <label class="leftcolumn">End Date</label>
+                                                <div class="rightcolumn">
+                                                    <input type="date" class="form-control" name="endDate" ng-model="endDate"
+                                                        required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                    <div class="leftcolumn">
+                                                            <label>
+                                                                    <input type="radio"  name="report" ng-model="report" value="kpi" required> KPI</label>
+                                                        </div>
+                                                    <div class="rightcolumn">  
+                                                         <label >
+                                                            <input type="radio" name="report" ng-model="report" value="alarm" required> ALARM</label></div>
+                                            </div>
+
+                                            <div class="reportButton">
+                                                    <button type="submit" class="btn btn-warning btn-block" ng-click="generateReport()">Generate Report</button>
+                                            </div>
+
                                         </form>
-                                    </table>
+                                        <div>
+                       
+                                         
+                                        </div>
                                 </div>
                             </div>
                             <div id="kpiTable" ng-show="IsVisible">
