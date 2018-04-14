@@ -6,7 +6,6 @@ console.log('Loading function');
 
 exports.handler = function (event, context, callback) {
 	console.log(JSON.stringify(event, null, 2));
-
 	event.Records.forEach(function (record) {
 		console.log(record.eventID);
 		console.log(record.eventName);
@@ -14,7 +13,6 @@ exports.handler = function (event, context, callback) {
 
 		if (record.eventName == "INSERT") {
 			var id = record.dynamodb.Keys.Id.S;
-			var sortKey = record.dynamodb.Keys.SortKey.N;
 
 			var suctionPressure = parseInt(record.dynamodb.NewImage.SuctionPressure.S);
 			var dischargePressure = parseInt(record.dynamodb.NewImage.DischargePressure.S);
@@ -45,7 +43,7 @@ exports.handler = function (event, context, callback) {
 				"flowRate": flowRate
 			}
 
-			updateDetails(id,sortKey, effeciencyRequest, dynamicHeadRequest, motorStatusRequest);
+			updateDetails(id, effeciencyRequest, dynamicHeadRequest, motorStatusRequest);
 
 		}
 	});
@@ -53,17 +51,16 @@ exports.handler = function (event, context, callback) {
 };
 
 
-function updateDetails(id, sortKey, effeciencyRequest, dynamicHeadRequest, motorStatusRequest) {
+function updateDetails(id, effeciencyRequest, dynamicHeadRequest, motorStatusRequest) {
 
-	// var table = "MeasuredData";
-	// AWS.config.update({
-	// 	region: "ap-south-1"
-	// });
+	var table = "MeasuredData";
+	AWS.config.update({
+		region: "ap-south-1"
+	});
 
-	// var docClient = new AWS.DynamoDB.DocumentClient()
+	var docClient = new AWS.DynamoDB.DocumentClient()
 
 	console.log("id" + id);
-	console.log("sortkey" + sortKey);
 	console.log("effeciencyRequest" + effeciencyRequest);
 	console.log("dynamicHeadRequest" + dynamicHeadRequest);
 
@@ -75,41 +72,38 @@ function updateDetails(id, sortKey, effeciencyRequest, dynamicHeadRequest, motor
 	console.log("calculatedDynamicHead" + calculatedDynamicHead);
 	console.log("calculatedMotorStatus" + calculatedMotorStatus);
 
-	var predictKPIRequest = {
-		"Id": id,
-		"SortKey":sortKey,
-		"PumpEffeciency": calculatedPumpEffeciency,
-		"DynamicHead": calculatedDynamicHead,
-		"MotorStatus": calculatedMotorStatus,
-		"FlowRate":effeciencyRequest.flowRate
-	}
-	console.log("calling kpi predicion method");
-	kpiPrediction.predictKPI(predictKPIRequest);
 
-	// // Update the item, unconditionally,
-	// var params = {
-	// 	TableName: table,
-	// 	Key: {
-	// 		"Id": id,
-	// 	},
-	// 	UpdateExpression: "set PumpEffeciency = :pumpEffeciency, DynamicHead = :dynamicHead, MotorStatus = :motorStatus",
-	// 	ExpressionAttributeValues: {
-	// 		":pumpEffeciency": calculatedPumpEffeciency,
-	// 		":dynamicHead": calculatedDynamicHead,
-	// 		":motorStatus": calculatedMotorStatus
-	// 	},
-	// 	ReturnValues: "UPDATED_NEW"
-	// };
+	// Update the item, unconditionally,
+	var params = {
+		TableName: table,
+		Key: {
+			"Id": id,
+		},
+		UpdateExpression: "set PumpEffeciency = :pumpEffeciency, DynamicHead = :dynamicHead, MotorStatus = :motorStatus",
+		ExpressionAttributeValues: {
+			":pumpEffeciency": calculatedPumpEffeciency,
+			":dynamicHead": calculatedDynamicHead,
+			":motorStatus": calculatedMotorStatus
+		},
+		ReturnValues: "UPDATED_NEW"
+	};
 
-	// console.log("Updating the item...");
-	// docClient.update(params, function (err, data) {
-	// 	if (err) {
-	// 		console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-	// 	} else {
-	// 		// Start Prediction
-			
-	// 		console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-	// 	}
-	// });
+	console.log("Updating the item...");
+	docClient.update(params, function (err, data) {
+		if (err) {
+			console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+		} else {
+			// Start Prediction
+			var predictKPIRequest = {
+				"Id": id,
+				"PumpEffeciency": calculatedPumpEffeciency,
+				"DynamicHead": calculatedDynamicHead,
+				"MotorStatus": calculatedMotorStatus,
+				"FlowRate":effeciencyRequest.flowRate
+			}
+			kpiPrediction.predictKPI(predictKPIRequest);
+			console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+		}
+	});
 
 }

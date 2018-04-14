@@ -77,6 +77,9 @@ public class DynamoDatabase {
 		measuredAttributeDefinitions.add(new AttributeDefinition()
 				.withAttributeName(OpcUAClientConstants.MEASURED_DATA_COL_1)
 				.withAttributeType(ScalarAttributeType.S));
+		measuredAttributeDefinitions.add(new AttributeDefinition()
+		.withAttributeName("SortKey").withAttributeType(
+				ScalarAttributeType.N));
 
 		List<AttributeDefinition> testDataAttributeDefinitions = new ArrayList<>();
 		testDataAttributeDefinitions.add(new AttributeDefinition()
@@ -100,6 +103,7 @@ public class DynamoDatabase {
 						new KeySchemaElement(
 								OpcUAClientConstants.MEASURED_DATA_COL_1,
 								KeyType.HASH))
+				.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
 				.withProvisionedThroughput(
 						new ProvisionedThroughput(new Long(10), new Long(10)))
 				.withAttributeDefinitions(measuredAttributeDefinitions)
@@ -193,6 +197,23 @@ public class DynamoDatabase {
 		.withAttributeDefinitions(alarmAttributeDefinitions)
 		.withStreamSpecification(streamSpecification);
 		
+		List<AttributeDefinition> learningTriggerAttributeDefinitions = new ArrayList<>();
+		learningTriggerAttributeDefinitions.add(new AttributeDefinition()
+				.withAttributeName(OpcUAClientConstants.TEST_DATA_COL_1)
+				.withAttributeType(ScalarAttributeType.S));
+		
+		CreateTableRequest createPredictionRequest = new CreateTableRequest()
+		.withTableName(
+				OpcUAClientConstants.PREDICTION_TABLE)
+		.withKeySchema(
+				new KeySchemaElement(
+						OpcUAClientConstants.TEST_DATA_COL_1,
+						KeyType.HASH))
+		.withProvisionedThroughput(
+				new ProvisionedThroughput(new Long(10), new Long(10)))
+		.withAttributeDefinitions(alarmAttributeDefinitions)
+		.withStreamSpecification(streamSpecification);
+		
 		try {
 			// CreateTableResult result =
 			// client.createTable(createTableRequest);
@@ -210,6 +231,8 @@ public class DynamoDatabase {
 					createVibrationTestingTrainingTableRequest);
 			TableUtils.createTableIfNotExists(client,
 					createAlarmTableRequest);
+			TableUtils.createTableIfNotExists(client,
+					createPredictionRequest);
 
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());

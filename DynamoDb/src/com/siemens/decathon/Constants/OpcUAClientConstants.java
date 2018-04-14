@@ -47,7 +47,8 @@ public class OpcUAClientConstants {
 	public static final String VIBRATION_TESTING_TABLE = "VibrationTesting";
 	
 	public static final String ALARM_TABLE = "AlarmTable";
-		
+	public static final String PREDICTION_TABLE = "PredictionTable";	
+	
 	public static final String ACCESS_KEY = "AKIAICOZGTNXCIHPQWGQ";
 	public static final String SECRET_KEY = "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";
 	public static final String URL = "http://localhost:8001";	
