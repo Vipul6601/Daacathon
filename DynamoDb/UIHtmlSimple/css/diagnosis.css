@@ -1,4 +1,5 @@
-#wrapper {
+#wrapper1 {
+
     width: auto;
     overflow: hidden;
     margin: 1%; /* will contain if #first is longer than #second */

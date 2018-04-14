@@ -13,63 +13,99 @@ var awsConfig = {
 AWS.config.update(awsConfig);
 var docClient = new AWS.DynamoDB.DocumentClient();
 //var data = null;
-
+getData();
+var fluidFlowData=[];
+var PumpEffData =[];	
+var TDHData =[];
+var PredictPumpEffData = [];
+var PredictTDHData=[];	
+var myChart2;
+var myChart1;
+var counter =0;
+var firstTimeCall = true;
 var scanExecute = function() {
+    
+    var inter = setInterval(function() {
+        fluidFlowData=[];
+        PumpEffData=[];
+		TDHData=[];
+		PredictPumpEffData=[];
+		PredictTDHData=[];
+        getData();
+    }, 1000); 
+} 
+
+function getRandomInt(max) {
+	  return Math.floor(Math.random() * Math.floor(max));
+	}
+function getData(){
 	var params = {
 			TableName : "MeasuredData"
 		};	
-		console.log("read f");
-		//debugger;
-		
-		
+
 	  docClient.scan(params,function(err, data){
        if(err) {
 		   	console.log("error");
        } else {
-		console.log("records" + data);		
-        var xAxisData=[];
-        var yAxisData =[];		
-		
-		for(var index=0; index<data.Items.length ;index++){
-            xAxisData.push(data.Items[index].FluidFlow);
-            yAxisData.push(data.Items[index].PumpEffeciency);
+		console.log("records" + data);
+		data.Items.sort(function(a, b){
+		    return a.Id-b.Id;
+		});
+		if(firstTimeCall)
+		{		
+			for(var index=0; index<data.Items.length ;index++)
+			{
+            	fluidFlowData.push(data.Items[index].FluidFlow);
+           	 	PumpEffData.push(data.Items[index].PumpEffeciency);
+				TDHData.push(data.Items[index].DynamicHead);
+				PredictPumpEffData.push(data.Items[index].PredictedPumpEffeciency);
+				PredictTDHData.push(data.Items[index].PredictedDynamicHead);
+			}
+			firstTimeCall = false;
 		}
-					
- var data = [ { label: "Flow vs Efficiency", 
-               x: xAxisData, 
-               y: yAxisData}];
-              //{ label: "Data Set 2", 
-               // x: [0, 1, 2, 3, 4], 
-               // y: [0, 1, 4, 9, 16]
-			   //} ] ;
-			   
-
-
-		var xy_chart = d3_xy_chart()
-	    // .width(960)
-	    // .height(500)
-	    .xlabel("Flow")
-	    .ylabel("Pump Efficiency") ;
-		
-		var svg = d3.select("#graph").append("svg")
-	    .datum(data)
-	    .call(xy_chart) ;
-		
-		 }
+		else{
+			myChart2.data.datasets[0].data.push(parseInt(data.Items[data.Items.length-1].PumpEffeciency));//update eff actual
+			myChart2.data.datasets[1].data.push(parseInt(data.Items[data.Items.length-1].PredictedPumpEffeciency));//update eff refernce
+			myChart1.data.datasets[0].data.push(parseInt(data.Items[data.Items.length-1].DynamicHead));//update tdh actual
+			myChart1.data.datasets[1].data.push(parseInt(data.Items[data.Items.length-1].PredictedDynamicHead));//update tdh refernce
+			myChart2.data.labels.push(data.Items[data.Items.length-1].FluidFlow);////update flow
+			myChart2.update({duration:0});
+			myChart1.update({duration:0});
+			if(counter > 5)
+			{
+				myChart2.data.labels.splice(0,1);
+				myChart2.data.datasets[0].data.splice(0,1);
+				myChart2.data.datasets[1].data.splice(0,1);
+				myChart1.data.datasets[0].data.splice(0,1);
+				myChart1.data.datasets[1].data.splice(0,1);
+				myChart2.update({duration:0});
+				myChart1.update({duration:0});
+			}
+			else
+				{
+				counter++;
+				}
+			
+            myChart1.update();
+			}
+		}
+        		
 	 });
-};
+}
+
 scanExecute();
-	
+
 function plotAmpFreqGraph()
 {
-	var flowAct = [0, 1, 3, 4, 6, 7, 9, 10];
-	var effAct = [2.16, 3.13, 4.26, 2.58, 2.72,2.91,2.96,2.99];
-	var tdhAct = [45.55,  43.63,41.65,  40.82,45.75,  41.4, 39.84, 39.04];
+
+	var flowAct = fluidFlowData;//[1,1.5,3.0,4.5];//;fluidFlowData ;
+	var effAct = PumpEffData;//[2.52,2.71,2.86,2.99];//PumpEffData;
+	var tdhAct = TDHData;//[40.75,  40.4, 39.64, 38.74];//TDHData;
 	
-	var effRef = [2.06, 2.13, 2.26, 2.58, 2.52,2.71,2.86,2.99];
-	var tdhRef = [40.55,  40.63,40.65,  40.82,40.75,  40.4, 39.64, 38.74];
+	var effRef = PredictPumpEffData;//[2.06, 2.13, 2.26, 2.58];//, 2.52,2.71,2.86,2.99];
+	var tdhRef = PredictTDHData;//[40.55,  40.63,40.65,  40.82];//,40.75,  40.4, 39.64, 38.74];
 	
-	var myChart1 = new Chart(document.getElementById("myChart1"), {
+	myChart1 = new Chart(document.getElementById("myChart1"), {
   	  type: 'line',
   	  data: {
   	    labels: flowAct,
@@ -99,7 +135,7 @@ function plotAmpFreqGraph()
         }
   	});
     
-    var myChart2 = new Chart(document.getElementById("myChart2"), {
+     myChart2 = new Chart(document.getElementById("myChart2"), {
     	  type: 'line',
     	  data: {
     	    labels: flowAct,

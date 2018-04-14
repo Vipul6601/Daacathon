@@ -1,0 +1,141 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pump Monitoring System</title>
+
+    <!-- Bootstrap core CSS -->
+<link href="../css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Custom styles for this template -->
+<link href="../css/simple-sidebar.css" rel="stylesheet">
+<link href="../css/reports.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+<script src="../js/awscredentials.js"></script>
+<script src="../js/reports.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+</head>
+
+<body ng-app="reportsApp">
+    <div ng-controller="reportsController">
+        <div id="wrapper" class="toggled">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="../index.html">
+                        Pump Monitor
+                    </a>
+                </li>
+                <li class="nav-items">
+                    <a href="diagnosis.html">Diagnosis</a>
+                </li>
+                <li class="nav-items">
+                    <a href="monitoring.html">Monitoring</a>
+                </li>
+                <li class="nav-items">
+                    <a href="vibration.html">Vibration</a>
+                </li>
+                <li class="nav-items">
+                    <a href="configuration.html">Configuration</a>
+                </li>
+                <li class="nav-items">
+                    <a href="testData.html">Test Data</a>
+                </li>
+				<li class="nav-items">
+                    <a href="reports.html">Reports</a>
+                </li>
+        </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+
+                            <label class="main-heading">Reports</label>
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+						<div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Reports</h3>
+                                </div>                                
+                                <div class="panel-body">
+                                    <table class="table table-condensed">
+                                        <form>
+											 Start Date	
+											<input type="date" name="startDate" ng-model="startDate" required>
+											 End Date	
+                                            <input type="date" name="endDate"  ng-model="endDate" required><br>                                         
+                                            <input type="radio"  name="report" ng-model="report"  value="kpi" required> KPI<br>
+                                            <input type="radio"  name="report" ng-model="report" value="alarm" required> Alarm<br>
+											<button type="submit"  ng-click="generateReport()">Generate Report</button>
+										</form>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="kpiTable"  ng-show = "IsVisible">    
+								<div class="subHeading">
+									KPI Report
+								</div>
+							
+								<div class="table-responsive">
+									<table class="table table-striped">
+										<tr>
+											<th ng-repeat="header in kpiHeaders">{{header}}</th>
+										</tr>
+										<tr ng-repeat="rowData in tableData track by $index">
+											<td ng-repeat="cellData in rowData track by $index">{{cellData}}</td>
+										</tr>
+                                </table>
+                                </div>	
+								<input type="button" value=" Export Report" ng-click="exportToExcel('#kpiTable')">
+                                <!--button ng-click="exportToExcel('#kpiTable')">
+                                        <span class="glyphicon glyphicon-share"></span>
+                                         EXPORT KPI TABLE</button-->						      
+                            </div>
+                                       
+
+							 <div id="alarmTable"  ng-show = "IsVisibleSecond">    
+								<div class="subHeading">
+									Alarm Report
+								</div>
+							
+								<div class="table-responsive">
+									<table class="table table-striped">
+										<tr>
+											<th ng-repeat="header in alarmHeaders">{{header}}</th>
+										</tr>
+										<tr ng-repeat="rowData in tableData track by $index">
+											<td ng-repeat="cellData in rowData track by $index">{{cellData}}</td>
+										</tr>
+                                </table>
+                                </div>
+								<input type="button" value=" Export Report" ng-click="exportToExcel('#alarmTable')">
+                                <!--button ng-click="exportToExcel('#alarmTable')">
+                                        <span class="glyphicon glyphicon-share"></span>
+                                        EXPORT ALARM TABLE</button-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+    </div>
+</body>
+
+</html> -->

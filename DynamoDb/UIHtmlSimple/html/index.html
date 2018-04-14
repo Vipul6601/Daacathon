@@ -11,29 +11,31 @@
     <title>Pump Monitoring System</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
+    <!--script src = "http://requirejs.org/docs/release/2.2.0/minified/require.js"></script-->
     <link href="../css/simple-sidebar.css" rel="stylesheet">
-
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="../js/awscredentials.js"></script>
+    
 </head>
 
 <body>
 
     <div id="wrapper" class="toggled">
-        <!-- Sidebar -->
+        <!-- Sidebar 1b93e1 -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="index.html">
-                        Pump Monitor
-                    </a>
+            <ul class="sidebar-nav" style="border-top:1px ridge rgba(255, 255, 255, 0.15)">
+                    <li class="sidebar-brand" >
+							<a href="index.html">
+								Pump Monitor
+							</a>
+						</li>
+                <li class="nav-items">
+                        <a href="diagnosis.html">Diagnosis</a>
                 </li>
                 <li class="nav-items">
-                    <a href="diagnosis.html">Daignosis</a>
-                </li>
-                <li class="nav-items">
-                    <a href="monitoring.html">Monitoring</a>
+                        <a href="monitoring.html">
+                            Monitoring</a>
                 </li>
                 <li class="nav-items">
                     <a href="vibration.html">Vibration</a>
@@ -43,6 +45,9 @@
                 </li>
                 <li class="nav-items">
                     <a href="testData.html">Test Data</a>
+                </li>
+				<li class="nav-items">
+                    <a href="reports.html">Reports</a>
                 </li>
             </ul>
         </div>

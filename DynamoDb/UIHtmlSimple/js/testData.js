@@ -60,14 +60,14 @@ var app = angular.module('testDataApp',[]);
 	    	var counter = 0;
 		$('#testData tbody tr').each(function(row, tr){ 
 		    TableData[row]={
-		        "Efficiency" : $(tr).find('td:eq(0) input:text').each(function() {
-		        	eff = this.value;
-		        })
-		        , "FluidFlow" :$(tr).find('td:eq(1) input:text').each(function() {
+		        "FluidFlow" : $(tr).find('td:eq(0) input:text').each(function() {
 		        	flow = this.value;
 		        })
-		        , "TDH" : $(tr).find('td:eq(2) input:text').each(function() {
+		        , "TDH" :$(tr).find('td:eq(1) input:text').each(function() {
 		        	tdh = this.value;
+		        })
+		        , "Efficiency" : $(tr).find('td:eq(2) input:text').each(function() {
+		        	eff = this.value;
 		        })
 		    }
 		    counter = counter +1;
@@ -96,8 +96,20 @@ var app = angular.module('testDataApp',[]);
 		docClient.update(params, function (err, data) {
 			if (err) {
 				console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+				swal({
+				 title: "<i>Error!</i>", 
+				 html: "Something Goes Wrong",  
+				 confirmButtonText: "<u>OK</u>", 
+			   });
 			} else {
+				
 				console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+				swal({
+				 title: "<i>Success!</i>", 
+				 html: "Data Saved Successfully",  
+				 confirmButtonText: "<u>OK</u>", 
+			   });
+				//swal("Saved!", "Data Saved Successfully", "success");
 			}
 		});
 		}); 

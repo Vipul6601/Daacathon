@@ -143,9 +143,14 @@
                                                         <tr>
                                                             <th>Row</th>
                                                             <th>Fault Name</th>
-                                                            <th>Catgory</th>
+                                                            <th>Category</th>
                                                         </tr>
                                                     </thead>
+                                                     <tr ng-if="predictionResult">
+                                                            <th>1</th>
+                                                            <th>{{predictionResult.PredictionOutput}}</th>
+                                                            <th>{{predictionResult.Category}}</th>
+                                                     </tr>
                                                 </table>
                                             </div>
                                         </div>
