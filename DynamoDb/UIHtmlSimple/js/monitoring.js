@@ -146,18 +146,10 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
         //     ScanIndexForward: true
         // };
 
-        var tenMinutesBefore = new Date();
-        tenMinutesBefore.setMinutes(tenMinutesBefore.getMinutes() - 10);
         var params = {
             TableName: "MeasuredData",
-            FilterExpression: "#Id > :from",
-            ExpressionAttributeNames: {
-                "#Id":"SortKey",
-            },
-            ExpressionAttributeValues: {
-                ":from": tenMinutesBefore.getTime()
-            },          
-            ScanIndexForward: false
+            Limit:200,
+            ScanIndexForward: true
         };
 
         docClient.scan(params, function (err, data) {
