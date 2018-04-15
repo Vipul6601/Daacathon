@@ -70,8 +70,19 @@
                             <div class="panel panel-danger">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Alarms</h3>
+                                    <div ng-if="motorStatus" class="statusHeading">
+                                            Motor Status : 
+                                            <div style="display: inline-block;" ng-if='motorStatus == "Normal"'>
+        
+                                                <img src="..\images\working.jpg" alt="Smiley face" height="24" width="24">
+                                            </div>
+                                            <div style="display: inline-block;" ng-if='motorStatus != "Normal"'>
+                                                <img src="..\images\error.jpg" alt="Smiley face" height="24" width="24  ">
+                                            </div>
+                                            {{motorStatus}}
+                                        </div>
                                 </div>
-                                <div class=" statusHeading">
+                                <!-- <div class=" statusHeading">
                                     Motor Status ::
                                     <div style="display: inline-block;" ng-if='motorStatus == "Normal"'>
 
@@ -81,7 +92,7 @@
                                         <img src="..\images\error.jpg" alt="Smiley face" height="32" width="32">
                                     </div>
                                     {{motorStatus}}
-                                </div>
+                                </div> -->
                                 <div class="panel-body">
                                     <table class="table table-condensed">
                                         <thead>

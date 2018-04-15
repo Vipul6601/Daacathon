@@ -130,7 +130,14 @@ function plotAmpFreqGraph()
             tooltips: {
                 mode: 'label'
             },
-            responsive: true,
+			responsive: true,
+			scales: {
+				yAxes: [{
+				  scaleLabel: {
+					display: true,
+					labelString: 'TDH'
+				  }
+				}]}
             
         }
   	});
@@ -161,7 +168,13 @@ function plotAmpFreqGraph()
                   mode: 'label'
               },
               responsive: true,
-              
+			  scales: {
+				yAxes: [{
+				  scaleLabel: {
+					display: true,
+					labelString: 'Efficiency'
+				  }
+				}]}
           }
     	});
       

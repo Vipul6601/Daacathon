@@ -14,8 +14,9 @@
 .statusHeading
 {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Allerta Stencil';  
+    font-weight: bold;
     color: blue;
 }
 

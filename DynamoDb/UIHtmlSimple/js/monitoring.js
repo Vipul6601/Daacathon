@@ -87,7 +87,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isEfficiencyAlarmRaised && !isEfficiencyAlarmExist)
             {
                var  alarmData = {
-                "Id": currentTime,
+                "Id": currentTime+"",
                 "Name":"Efficiency Off-track",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -99,7 +99,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isDynamicHeadAlarm && !isDynamicHeadAlarmExist)
             {
                var  alarmData = {
-                "Id": currentTime,
+                "Id": currentTime+"",
                 "Name":"TDH Off-track",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -111,7 +111,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isDryRunningAlarmRaised && !isDryRunningalrmExist)
                 {
                var  alarmData = {
-                "Id": currentTime,
+                "Id": currentTime+"",
                 "Name":"Dry Running",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -123,7 +123,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isBlockageAlarmRaised && !isBlockageAlarmExist)
             {
                var  alarmData = {
-                "Id": currentTime,
+                "Id": currentTime+"",
                 "Name":"Blockage",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -140,17 +140,22 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
 
     $interval(function () {
 
-        var twoHoursBefore = new Date();
-        twoHoursBefore.setHours(twoHoursBefore.getMinutes() - 10);
+        // var params = {
+        //     TableName: "MeasuredData",
+        //     Limit: 10,
+        //     ScanIndexForward: true
+        // };
+
+        var tenMinutesBefore = new Date();
+        tenMinutesBefore.setMinutes(tenMinutesBefore.getMinutes() - 10);
         var params = {
             TableName: "MeasuredData",
-            Limit: 10,
             FilterExpression: "#Id > :from",
             ExpressionAttributeNames: {
                 "#Id":"SortKey",
             },
             ExpressionAttributeValues: {
-                ":from": twoHoursBefore.getTime()
+                ":from": tenMinutesBefore.getTime()
             },          
             ScanIndexForward: false
         };
@@ -163,7 +168,18 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
                 console.log("success");
                 tableData = [];
                 var alarmParameters = [];
-                for (var index = 0; index < data.Items.length; index++) {
+                data.Items.sort(function(a, b) {
+                    return parseFloat(a.SortKey) - parseFloat(b.SortKey);
+                });
+
+                data.Items.reverse();
+                var tableSize = 0
+                if( data.Items.length < 10)
+                       tableSize = data.Items.length;
+                else
+                    tableSize = 10;
+
+                for (var index = 0; index < tableSize; index++) {
                     var rowData = [];
                     rowData.push(index + 1);
                     rowData.push(data.Items[index].DischargePressure);
@@ -205,7 +221,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
         });
       }, 1000);
 
-        $interval(function () {
+    $interval(function () {
        
             var params = {
                 TableName: "AlarmTable",
