@@ -209,10 +209,11 @@ app.controller('vibrationController', function ($scope,$interval) {
             } else {
                 console.log("PutItem succeeded:");
                 if (allParams.length > 0)
-                    putRecordInDynamoDb(allParams, docClient);
+                    putRecordInDynamoDb(allParams, docClient,isTestingData);
                 else {
                     alert("Data Acquisition is successful !!!");
-                    createModelPredictionReqest();
+                    if(isTestingData)
+                       createModelPredictionReqest();
                 }
             }
         });

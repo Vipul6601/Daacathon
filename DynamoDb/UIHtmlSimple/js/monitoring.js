@@ -14,12 +14,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
     var headers = ["S. No.", "Discharge Pressure", "Discharge Temperature", "Suction Pressure", "Suction Temperature", "Fluid Flow", "Pump Effeciency", "Dynamic Head", "Time Stamp"];
     var tableData = [];
 
-    var params = {
-        TableName: "MeasuredData",
-        Limit: 10,
-        ScanIndexForward: true
-    };
-
+    
     $interval(function () {
 
         if (typeof $scope.alarms !== 'undefined' && typeof $scope.alarmParameter !== 'undefined') {
@@ -92,7 +87,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isEfficiencyAlarmRaised && !isEfficiencyAlarmExist)
             {
                var  alarmData = {
-                "Id": timestamp,
+                "Id": currentTime,
                 "Name":"Efficiency Off-track",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -104,7 +99,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isDynamicHeadAlarm && !isDynamicHeadAlarmExist)
             {
                var  alarmData = {
-                "Id": timestamp,
+                "Id": currentTime,
                 "Name":"TDH Off-track",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -116,7 +111,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isDryRunningAlarmRaised && !isDryRunningalrmExist)
                 {
                var  alarmData = {
-                "Id": timestamp,
+                "Id": currentTime,
                 "Name":"Dry Running",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -128,7 +123,7 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             if(isBlockageAlarmRaised && !isBlockageAlarmExist)
             {
                var  alarmData = {
-                "Id": timestamp,
+                "Id": currentTime,
                 "Name":"Blockage",
                 "TimeStamp": timestamp,
                 "AlarmStatus" : "Active",
@@ -140,10 +135,25 @@ app.controller('monitoringController', ['$scope', '$interval', function ($scope,
             addOrUpdateAlarms(newAlarms,inActiveAlarms);
         }
 
-    }, 5000);
+    }, 2000);
 
 
     $interval(function () {
+
+        var twoHoursBefore = new Date();
+        twoHoursBefore.setHours(twoHoursBefore.getMinutes() - 10);
+        var params = {
+            TableName: "MeasuredData",
+            Limit: 10,
+            FilterExpression: "#Id > :from",
+            ExpressionAttributeNames: {
+                "#Id":"SortKey",
+            },
+            ExpressionAttributeValues: {
+                ":from": twoHoursBefore.getTime()
+            },          
+            ScanIndexForward: false
+        };
 
         docClient.scan(params, function (err, data) {
             if (err) {

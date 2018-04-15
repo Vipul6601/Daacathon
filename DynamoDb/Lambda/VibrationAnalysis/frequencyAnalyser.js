@@ -110,8 +110,8 @@ function checkImpellarCombination(filteredSet) {
         typeof (filteredSet.DefectFrequency7) !== "undefined" &&
         typeof (filteredSet.DefectFrequency3) === "undefined" &&
         typeof (filteredSet.DefectFrequency4) === "undefined") {
-            if (parseFloat(filteredSet.DefectFrequency5.Amplitude < 0)
-            && parseFloat(filteredSet.DefectFrequency6.Amplitude < 0))
+            if (parseFloat(filteredSet.DefectFrequency3.Amplitude < 0)
+            && parseFloat(filteredSet.DefectFrequency4.Amplitude < 0))
                impellarCombination = 2;
     }
     if (typeof (filteredSet.DefectFrequency1) !== "undefined" &&
@@ -132,19 +132,19 @@ function checkImpellarCombination(filteredSet) {
     typeof (filteredSet.DefectFrequency5) !== "undefined" &&
     typeof (filteredSet.DefectFrequency6) !== "undefined" &&
     typeof (filteredSet.DefectFrequency7) !== "undefined") {
-
-  console.log(parseFloat(filteredSet.DefectFrequency5.Amplitude) + "ccc"+parseFloat(filteredSet.DefectFrequency6.Amplitude))
-    if (parseFloat(filteredSet.DefectFrequency3.Amplitude) > 0
-        && parseFloat(filteredSet.DefectFrequency4.Amplitude) > 0  
-        && parseFloat(filteredSet.DefectFrequency5.Amplitude) > 0
-        && parseFloat(filteredSet.DefectFrequency6.Amplitude) > 0)
         impellarCombination = 3;
-    else if (parseFloat(filteredSet.DefectFrequency3.Amplitude) < 0
-        || parseFloat(filteredSet.DefectFrequency4.Amplitude) < 0)
-        impellarCombination = 2;
-    else if (parseFloat(filteredSet.DefectFrequency5.Amplitude) < 0
-        || parseFloat(filteredSet.DefectFrequency6.Amplitude) < 0)
-        impellarCombination = 1;
+
+//   console.log(parseFloat(filteredSet.DefectFrequency5.Amplitude) + "ccc"+parseFloat(filteredSet.DefectFrequency6.Amplitude))
+//     if (parseFloat(filteredSet.DefectFrequency3.Amplitude) > 0
+//         && parseFloat(filteredSet.DefectFrequency4.Amplitude) > 0  
+//         && parseFloat(filteredSet.DefectFrequency5.Amplitude) > 0
+//         && parseFloat(filteredSet.DefectFrequency6.Amplitude) > 0)
+//     else if (parseFloat(filteredSet.DefectFrequency3.Amplitude) < 0
+//         || parseFloat(filteredSet.DefectFrequency4.Amplitude) < 0)
+//         impellarCombination = 2;
+//     else if (parseFloat(filteredSet.DefectFrequency5.Amplitude) < 0
+//         || parseFloat(filteredSet.DefectFrequency6.Amplitude) < 0)
+//         impellarCombination = 1;
 
     }
     return impellarCombination;
