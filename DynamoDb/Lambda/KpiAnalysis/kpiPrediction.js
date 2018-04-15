@@ -42,7 +42,7 @@ var kpiPrediction = {
                                         tdhDataSet.push(tdhData);
                                 }
 
-                                const efficiencyResult = regression.linear(efficiencyDataSet);
+                                const efficiencyResult = regression.polynomial(efficiencyDataSet);
                                 const efficiencyGradient = efficiencyResult.equation[0];
                                 const efficiencyYIntercept = efficiencyResult.equation[1];
                                 var predictedPumpEfcncy= efficiencyResult.predict(parseFloat(predictKPIRequest.FlowRate))[1];
