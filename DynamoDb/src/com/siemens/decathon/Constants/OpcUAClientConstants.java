@@ -50,10 +50,10 @@ public class OpcUAClientConstants {
 	public static final String PREDICTION_TABLE = "PredictionTable";	
 	//Siddhant
 	
-	public static final String ACCESS_KEY = "AKIAIBWKTCLH6XLWRBXQ";
-	public static final String SECRET_KEY = "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";
+//	public static final String ACCESS_KEY = "AKIAIBWKTCLH6XLWRBXQ";
+	//public static final String SECRET_KEY = "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";
 //vipul
-//	public static final String ACCESS_KEY = "AKIAICOZGTNXCIHPQWGQ";
-	//public static final String SECRET_KEY = "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";
+ 	public static final String ACCESS_KEY = "AKIAICOZGTNXCIHPQWGQ";
+    public static final String SECRET_KEY = "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";
 	public static final String URL = "http://localhost:8001";	
 }

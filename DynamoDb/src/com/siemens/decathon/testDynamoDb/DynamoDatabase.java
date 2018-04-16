@@ -150,7 +150,7 @@ public class DynamoDatabase {
 								KeyType.HASH))
 				.withKeySchema(new KeySchemaElement("SortKey", KeyType.RANGE))
 				.withProvisionedThroughput(
-						new ProvisionedThroughput(new Long(10), new Long(10)))
+								new ProvisionedThroughput(new Long(10), new Long(10)))
 				.withAttributeDefinitions(vibrationAttributeDefinitions)
 				.withStreamSpecification(streamSpecification);
 

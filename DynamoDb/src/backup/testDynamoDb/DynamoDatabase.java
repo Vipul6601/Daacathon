@@ -1,4 +1,4 @@
-package com.siemens.decathon.testDynamoDb;
+package backup.testDynamoDb;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class DynamoDatabase {
 	
 	public static void main(String[] args) {
 		new DynamoDatabase();
-		updateTable(null);	
+	//updateTable(null, 0, 0, 0);	
 	}
 	public DynamoDatabase()
 	{
@@ -47,8 +47,8 @@ public class DynamoDatabase {
 					new AwsClientBuilder.EndpointConfiguration(OpcUAClientConstants.URL, Regions.AP_SOUTH_1.name()))*/
 			.withCredentials(new StaticCredentialsProvider(credentials)).build();
 	 dynamoDB = new DynamoDB(client);
-	 createTable();
-	 updateParameterizedTable();
+//	 createTable();
+//	 updateParameterizedTable();
 	}
 	
 	public void createTable()
@@ -77,7 +77,7 @@ public class DynamoDatabase {
 	             .withKeySchema(new KeySchemaElement(OpcUAClientConstants.MEASURED_DATA_COL_1, KeyType.HASH))
 	             .withProvisionedThroughput(new ProvisionedThroughput(new Long(10), new Long(10)))
 	             .withAttributeDefinitions(measuredAttributeDefinitions).withStreamSpecification(streamSpecification);
-		
+			
 		try {
 		//	CreateTableResult result = client.createTable(createTableRequest);
 			TableUtils.createTableIfNotExists(client,createParamTableRequest);
@@ -90,15 +90,25 @@ public class DynamoDatabase {
 		}
 	}
 
-	public static void updateTable(Map<String,AttributeValue> s) {
-		 HashMap<String, AttributeValue> measuredMap = new HashMap<>();
-
-		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_1, new AttributeValue().withS(System.currentTimeMillis()+""));
+	public  void updateTable(Map<String,AttributeValue> s) {
+			 HashMap<String, AttributeValue> measuredMap = new HashMap<>();
+			 credentials = new BasicAWSCredentials(OpcUAClientConstants.ACCESS_KEY, OpcUAClientConstants.SECRET_KEY);
+			 client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)/*withEndpointConfiguration(
+							new AwsClientBuilder.EndpointConfiguration(OpcUAClientConstants.URL, Regions.AP_SOUTH_1.name()))*/
+					.withCredentials(new StaticCredentialsProvider(credentials)).build();
+			 dynamoDB = new DynamoDB(client);
+				double randomNumber = Math.random();
+				double suctionPressure = 10 + Math.floor(10*randomNumber);
+				double dischargePressure = 30 + 20*randomNumber;
+				double flowRate = 15 + 40*randomNumber;
+				
+			 measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_1, new AttributeValue().withS(System.currentTimeMillis()+""));
+		measuredMap.put("SortKey", new AttributeValue().withN(System.currentTimeMillis()+""));
 		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_2, new AttributeValue().withS("10"));
 		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_3, new AttributeValue().withS("20"));
-		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_4, new AttributeValue().withS("100"));
-		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_5, new AttributeValue().withS("200"));
-		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_6, new AttributeValue().withS("600"));
+		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_4, new AttributeValue().withS("0"));
+		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_5, new AttributeValue().withS("0"));
+		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_6, new AttributeValue().withS("0"));
 		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_7, new AttributeValue().withS("100"));
 		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_8, new AttributeValue().withS("100"));
 		measuredMap.put(OpcUAClientConstants.MEASURED_DATA_COL_9, new AttributeValue().withS("100"));

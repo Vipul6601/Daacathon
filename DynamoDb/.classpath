@@ -48,5 +48,18 @@
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal_lib/sqlite4java.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/thirdPartyLib/org-apache-commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/DynamoDependency/DynamoDBLocal.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/guava-19.0.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/jool-0.9.10.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/jsr305-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/netty-buffer-4.0.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/netty-codec-4.0.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/netty-common-4.0.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/netty-handler-4.0.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/netty-transport-4.0.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/protonpack-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/slf4j-api-1.7.18.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/stack-client-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/stack-core-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jar_files/ua-client-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
